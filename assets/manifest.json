@@ -1,7 +1,23 @@
 {
   "dependencies": {
     "main.js": {
+      "vendor": [
+        "vendor/scroll-to.js",
+        "vendor/reframe.js",
+        "vendor/event.js",
+        "vendor/vissense.js",
+        "vendor/howler.js"
+      ],
       "files": [
+        "scripts/scroll-jack.js",
+        "scripts/artwork-info.js",
+        "scripts/st-audio.js",
+        "scripts/utilities.js",
+        "scripts/magnifier.js",
+        "scripts/centered.js",
+        "scripts/mousePosition.js",
+        "scripts/zoomy.js",
+        "scripts/mobile.js",
         "scripts/main.js"
       ],
       "main": true
@@ -24,6 +40,6 @@
     }
   },
   "config": {
-    "devUrl": "http://bedrock-sage.localhost"
+    "devUrl": "http://sheldontapley.localhost"
   }
 }

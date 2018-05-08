@@ -131,7 +131,7 @@ var cssTasks = function (filename) {
 //   .pipe(gulp.dest(path.dist + 'scripts'))
 // ```
 var jsTasks = function (filename) {
-	return lazypipe()
+  return lazypipe()
 		.pipe(function () {
 			return gulpif(enabled.maps, sourcemaps.init());
 		})

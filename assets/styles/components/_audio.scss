@@ -3,285 +3,68 @@
   padding: 0 23px;
 
   .audio-piece {
+    .duration, .timer{
+      background: rgba(0,0,0,.5);
+      bottom: 0;
+      color: #fff;
+      padding: .5em;
+      position: absolute;
+      
+      &.timer{
+        left: 0;
+      }
 
-    h3 {
-      font-size: 21px;
-      letter-spacing: .15px;
-      line-height: 28px;
+      &.duration{
+        right: 0;
+      }
     }
-    .jp-audio {
+    
+    button{
+      background-color: gray;
+      border: 0 solid;
+      border-radius: .1em;
+      padding: 1.2em;
+      color: #fff;
+      // position: absolute;
+
+    }
+    .play{
+      
+    }
+
+    .pause{
+
+    }
+
+    .span-value-wrap{
+      height: 50px;
       position: relative;
       width: 100%;
 
-      .jp-gui {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 10px 0 25px;
-        width: auto;
-        margin: 0 16px;
+      .span-value{
+        background-color:#646464;
+        border-radius: 0;
+        display: block;
+        height: 100%;
+        overflow: visible;
+        width: 0;
 
-        .jp-controls {
-          width: auto;
-          display: inline-block;
-          padding: 0;
-          position: absolute;
-          top: 10px;
+        .span-value-jump{
+          box-sizing: content-box;
+          height: 100%;
+          width: 0;
 
-          button {
-            align-items: center;
-            background: none;
-            display: flex;
-            justify-content: center;
-            min-height: 12.5px;
-            padding: 0;
-            text-indent: 0;
-            width: 100%;
+          div{
             height: 100%;
-
-            svg {
-              width: 33px;
-              height: 46px;
-            }
-          }
-        }
-
-        $bar-height: 4px;
-        $bar-radius: 2px;
-
-        .jp-progress-wrap {
-          align-items: center;
-          flex-grow: 2;
-          display: flex;
-          justify-content: center;
-          bottom: 18px;
-          margin-top: 62px;
-          width: 100%;
-
-          .jp-current-time, .jp-duration {
-            font-size: 19px;
-            font-style: normal;
-            letter-spacing: .14px;
-            line-height: 22px;
-            float: none;
-            color: #63737E;
-            display: inline-block;
-            position: absolute;
-            top: 22px;
-            width: auto;
-          }
-
-          .jp-current-time {
-            left: 0;
-          }
-
-          .jp-duration {
-            right: 0;
-          }
-
-          .jp-progress {
-            height: $bar-height;
-            border-radius: $bar-radius;
-            margin: 0;
-            overflow: visible;
-            position: relative;
-            float: none;
-            top: 0;
-            left: 0;
-            flex-grow: 1;
-
-            .jp-seek-bar {
-              background: rgba(65, 85, 100, .7);
-
-              .jp-play-bar {
-                background: #415564;
-                position: relative;
-
-                &:after {
-                  background: #23313F;
-                  border-radius: 50%;
-                  content: ' ';
-                  height: 9px;
-                  position: absolute;
-                  right: -4.5px;
-                  top: -2.5px;
-                  width: 9px;
-                }
-              }
-            }
-          }
-        }
-
-        .jp-volume-controls {
-          display: none;
-
-          button {
+            width: 100%;
 
           }
-
-          .audio-icon {
-            background: url($image-path + 'audio-icon.png') no-repeat center/contain transparent;
-          }
-
-          .jp-volume-bar {
-            height: $bar-height;
-            border-radius: $bar-radius;
-            background: rgba(65, 85, 100, .7);
-            display: none;
-
-            .jp-volume-bar-value {
-              background: #415564;
-              height: $bar-height;
-            }
-          }
+          
         }
       }
-    }
-
-    .jp-audio, .jp-audio-stream, .jp-video, .jp-interface {
-      background: #F3F4F7;
-      border: 0 solid;
-    }
-  }
-
-  @media screen and (min-width: 768px) {
-    padding: 0 41px;
-    margin-top: 0;
-
-    h2 {
-      margin-bottom: 29px;
-    }
-
-    .audio-piece {
-      margin-bottom: 40px;
-
-      p {
-        margin-bottom: -1px;
-      }
-
-      .jp-audio {
-        margin-bottom: 11px;
-        margin-top: 14px;
-        width: 100%;
-
-        .jp-gui {
-          align-items: center;
-          display: flex;
-          flex-direction: row;
-          height: auto;
-          justify-content: center;
-          padding: 0;
-          margin: 0 6px;
-
-          .jp-controls {
-            display: inline-block;
-            margin-right: 11px;
-            padding: 0;
-            position: static;
-            top: 0;
-
-            button {
-              background: none;
-              height: auto;
-              padding: 0;
-              text-indent: 0;
-              width: auto;
-
-              svg {
-                width: 15px;
-                height: 15.5px;
-              }
-            }
-          }
-
-          $bar-height: 4px;
-          $bar-radius: 2px;
-
-          .jp-progress-wrap {
-            align-items: center;
-            flex-grow: 2;
-            display: flex;
-            justify-content: center;
-            margin-top: 0;
-            position: static;
-
-            .jp-current-time, .jp-duration {
-              float: none;
-              display: inline-block;
-              line-height: 27px;
-              width: auto;
-              position: static;
-            }
-
-            .jp-duration {
-              border-right: 1px solid;
-              padding-right: 9px;
-            }
-
-            .jp-current-time {
-              border-left: 1px solid;
-              padding-left: 9px;
-            }
-
-            .jp-progress {
-              height: $bar-height;
-              border-radius: $bar-radius;
-              margin: 0 18px;
-              min-width: 241px;
-              position: relative;
-              float: none;
-              top: 0;
-              left: 0;
-              flex-grow: 1;
-
-              .jp-seek-bar {
-
-                .jp-play-bar {
-                }
-              }
-            }
-          }
-
-          .jp-volume-controls {
-            flex-grow: 1;
-            position: relative;
-            top: 0;
-            left: 0;
-            width: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-left: 8px;
-
-            button {
-              display: inline-block;
-              position: static;
-            }
-
-            .audio-icon {
-              height: 20px;
-              width: 20px;
-            }
-
-            .jp-volume-bar {
-              height: $bar-height;
-              border-radius: $bar-radius;
-              display: inline-block;
-              flex-grow: 1;
-              margin-left: 10px;
-              position: static;
-              width: 69px;
-
-              .jp-volume-bar-value {
-                height: $bar-height;
-              }
-            }
-          }
-        }
-      }
-
-      .jp-audio, .jp-audio-stream, .jp-video, .jp-interface {
+      &:hover .span-value-jump div{
+        background-color: rgba(79, 105, 61, 0.5);
+        
       }
     }
   }
