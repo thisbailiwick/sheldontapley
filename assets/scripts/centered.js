@@ -3,9 +3,6 @@ var nakasentro = {
   fullscreen: document.querySelector(".fullscreen"),
   artworks_elements: document.querySelectorAll(".artwork_piece"),
   artworks: Array(),
-  windowHeight: null,
-  windowWidth: null,
-  windowRatio: null,
   mainContentWidth: null,
   mainContentWrap: document.querySelector(".content>.main"),
   imageCentered: false,
@@ -60,20 +57,20 @@ var nakasentro = {
     this.fullscreen = document.querySelector(".fullscreen");
     this.artworks_elements = document.querySelectorAll(".artwork_piece");
     this.artworks = Array();
-    this.windowHeight = null;
-    this.windowWidth = null;
-    this.windowRatio = null;
+    // this.windowHeight = null;
+    // this.windowWidth = null;
+    // this.windowRatio = null;
     this.mainContentWidth = null;
     this.mainContentWrap = document.querySelector(".content>.main");
     this.imageCentered = false;
     this.scrollBeingThrottled = false;
   },
-  setViewportDimensions: function() {
-    var viewportDimensions = this.getViewportDimensions();
-    this.windowHeight = viewportDimensions.height;
-    this.windowWidth = viewportDimensions.width;
-    this.windowRatio = this.windowWidth / this.windowHeight;
-  },
+  // setViewportDimensions: function() {
+  //   var viewportDimensions = this.getViewportDimensions();
+  //   this.windowHeight = viewportDimensions.height;
+  //   this.windowWidth = viewportDimensions.width;
+  //   this.windowRatio = this.windowWidth / this.windowHeight;
+  // },
   resetImageValues: function(artworkImage, artworkImageWrap) {
     artworkImage.style.width = "";
     artworkImage.style.height = "";
@@ -85,7 +82,7 @@ var nakasentro = {
     // artworkImageWrap.style.minHeight = "";
   },
   setupValues: function() {
-    this.setViewportDimensions();
+    // this.setViewportDimensions();
     document.body.classList.remove("orientation-portrait", "orientation-landscape", "artworks-processed");
 
     this.browserOrientation = this.getBrowserOrientation();
@@ -110,8 +107,8 @@ var nakasentro = {
 
       artworkImage.style.minHeight = artworkImage.clientHeight + "px";
       artworkImage.style.minWidth = artworkImage.clientWidth + "px";
-      var imageVhValue = artworkImage.clientHeight / nakasentro.windowHeight * 100;
-      var imageVwValue = artworkImage.clientWidth / nakasentro.windowWidth * 100;
+      var imageVhValue = artworkImage.clientHeight / utilities.windowHeight * 100;
+      var imageVwValue = artworkImage.clientWidth / utilities.windowWidth * 100;
       if (imageVhValue === 0) {
         console.log("———————————image values are zero on init!!!!");
       }
@@ -124,10 +121,10 @@ var nakasentro = {
       // get image max height
       if (imageSizeChangeTechnique === "width") {
         // if imageSizeChangeTechnique is width we want to multiply the viewport width in px by the height/width ratio of the image
-        imageMaxHeight = this.windowHeight * (artworkImage.clientHeight / artworkImage.clientWidth);
+        imageMaxHeight = utilities.windowHeight * (artworkImage.clientHeight / artworkImage.clientWidth);
       } else {
         // if imageSizeChangeTechnique is height we want to just use the viewport height amount.
-        imageMaxHeight = this.windowHeight;
+        imageMaxHeight = utilities.windowHeight;
       }
       var imageOffsetFromDocTop = utilities.getElementOffsetFromDoc(artworkImage).top;
       var imageMaxHeightCenterPointFromDocTop = imageMaxHeight / 2 + imageOffsetFromDocTop;
@@ -162,14 +159,16 @@ var nakasentro = {
         }
       });
     }, this);
+
     document.body.classList.add("artworks-processed");
     window.addEventListener(
       "resize",
       this.debounce(function() {
-        var currentViewportDimenstions = this.getViewportDimensions();
-        // console.log(this.windowHeight, currentViewportDimenstions.height, this.windowWidth, currentViewportDimenstions.width);
-        if (this.windowHeight !== currentViewportDimenstions.height || this.windowWidth !== currentViewportDimenstions.width) {
+        var currentViewportDimenstions = utilities.getViewportDimensions();
+        // console.log(utilities.windowHeight, currentViewportDimenstions.height, utilities.windowWidth, currentViewportDimenstions.width);
+        if (utilities.windowHeight !== currentViewportDimenstions.height || utilities.windowWidth !== currentViewportDimenstions.width) {
           this.artworks = Array();
+          utilities.setViewportDimensions();
           this.setupValues();
         }
       }, 250).bind(this)
@@ -181,15 +180,15 @@ var nakasentro = {
     var imageRatio = artworkImage.clientWidth / artworkImage.clientHeight;
     // console.log(this.browserOrientation);
     if (this.browserOrientation === "landscape") {
-      if (imageRatio > this.windowRatio) {
+      if (imageRatio > utilities.windowRatio) {
         return "width";
       } else {
         return "height";
       }
     }
 
-    // console.log(imageRatio, this.windowRatio);
-    if (imageRatio < this.windowRatio) {
+    // console.log(imageRatio, utilities.windowRatio);
+    if (imageRatio < utilities.windowRatio) {
       return "height";
     } else {
       return "width";
@@ -214,35 +213,23 @@ var nakasentro = {
     document.querySelector("body").classList.add(classes);
   },
 
-  getViewportDimensions: function() {
-    // TODO: will this work with fullscreen?
-    var w = window,
-      d = document,
-      e = d.documentElement,
-      g = d.getElementsByTagName("body")[0],
-      x = w.innerWidth || e.clientWidth || g.clientWidth,
-      y = w.innerHeight || e.clientHeight || g.clientHeight;
-
-    return { width: x, height: y };
-  },
-
   getBrowserOrientation: function() {
-    return this.windowHeight > this.windowWidth ? "portrait" : "landscape";
+    return utilities.windowHeight > utilities.windowWidth ? "portrait" : "landscape";
   },
 
   getPixelsToCenter: function(distanceFromTopOfViewport) {
-    viewport_center = this.windowHeight / 2;
+    viewport_center = utilities.windowHeight / 2;
     var center_difference = viewport_center - distanceFromTopOfViewport;
 
     return center_difference;
   },
 
   getPercentageToCenter: function(toCenterPixels) {
-    return toCenterPixels / nakasentro.windowHeight * 100;
+    return toCenterPixels / utilities.windowHeight * 100;
   },
 
   getVhToCenter: function(toCenterPixels) {
-    return toCenterPixels / nakasentro.windowHeight * 100;
+    return toCenterPixels / utilities.windowHeight * 100;
   },
 
   setNewArtworkSize: function(artwork) {
@@ -250,18 +237,17 @@ var nakasentro = {
     var rect = artwork.artworkImage.getBoundingClientRect();
     var distanceFromTopOfViewport = rect.top + rect.height / 2;
     var toCenterPixels = nakasentro.getPixelsToCenter(distanceFromTopOfViewport);
+
     var toCenterPixelsAbsolute = Math.abs(toCenterPixels);
     // TODO: this is about 51 pixels off, why?!
     toCenterPixelsAbsolute = toCenterPixelsAbsolute;
     var toCenterPercentage = nakasentro.getPercentageToCenter(toCenterPixelsAbsolute);
-    // console.log(this.getViewportDimensions());
     // console.log(toCenterPercentage);
 
     // if we're close to the centerpoint of an image, we trigger a scroll to
     if (toCenterPercentage < 3) {
       document.body.classList.add("centered-image", "centered-image-background-show");
       this.imageCentered = true;
-
       // window.addEventListener('wheel', function(e){
       //   e.preventDefault();
       // });

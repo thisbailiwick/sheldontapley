@@ -5,15 +5,15 @@ zoomy = {
   init: function() {
     this.reset();
     var buttons = document.querySelectorAll(".artwork_piece .actions .zoom").forEach(function(value, index) {
-      var imageWrap = value.parentNode.parentNode.parentNode;
-      var zoomWrap = imageWrap.parentNode;
-      var mouseMapImage = imageWrap.querySelector('.mouse-map');
-      var img = imageWrap.firstElementChild;
+      var artworkPieceWrap = value.parentNode.parentNode.parentNode.parentNode;
+      var zoomyWrap = artworkPieceWrap.querySelector('.zoomy-wrap');
+      var mouseMapImage = artworkPieceWrap.querySelector('.mouse-map');
+      var img = artworkPieceWrap.firstElementChild;
       this.pictures.push({
         button: value,
         index: index,
-        zoomWrap: zoomWrap,
-        imageWrap: imageWrap,
+        zoomyWrap: zoomyWrap,
+        artworkPieceWrap: artworkPieceWrap,
         image: img,
         mouseMapImage: mouseMapImage,
         mouseMapImageHeight: mouseMapImage.clientHeight,
@@ -41,7 +41,7 @@ zoomy = {
   },
 
   toggleZoom: function(e) {
-    this.zoomWrap.classList.toggle("zoomed");
+    this.artworkPieceWrap.classList.toggle("zoomed");
     document.body.classList.toggle("zoomed");
     this.isZoomed = !this.isZoomed;
     if (zoomy.isTouchDevice) {
@@ -63,17 +63,17 @@ zoomy = {
     }
   },
   mapMouseToImage: function(e) {
-    var imageWrap = this.imageWrap;
+    var zoomyWrap = this.zoomyWrap;
 
     var position = mousePosition.mousePositionElement(e);
     console.log('position:');
     console.log(position);
-    console.log('imageWrap.clientWidth: ' + imageWrap.clientWidth);
-    console.log('imageWrap.clientHeight: ' + imageWrap.clientHeight);
+    // console.log('zoomyWrap.clientWidth: ' + zoomyWrap.clientWidth);
+    // console.log('zoomyWrap.clientHeight: ' + zoomyWrap.clientHeight);
     // console.log(e);
     if (position.x > 0) {
-      var leftPercentage = position.x / imageWrap.clientWidth * 100;
-      var topPercentage = position.y / imageWrap.clientHeight * 100;
+      var leftPercentage = position.x / zoomyWrap.clientWidth * 100;
+      var topPercentage = position.y / zoomyWrap.clientHeight * 100;
       topPercentage = topPercentage < 0 ? 0 : topPercentage;
       topPercentage = topPercentage > 100 ? 100 : topPercentage;
       leftPercentage = leftPercentage < 0 ? 0 : leftPercentage;
@@ -85,7 +85,5 @@ zoomy = {
 
       this.mouseMapImage.style.backgroundPosition = leftPercentage + "% " + topPercentage + "%";
     }
-
-
   }
 };

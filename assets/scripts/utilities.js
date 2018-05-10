@@ -1,4 +1,32 @@
 var utilities = {
+  windowHeight: null,
+  windowWidth: null,
+  windowRatio: null,
+  init: function() {
+    this.setViewportDimensions();
+  },
+  reset: function() {
+    this.windowHeight = null;
+    this.windowWidth = null;
+    this.windowRatio = null;
+  },
+  getViewportDimensions: function() {
+    // TODO: will this work with fullscreen?
+    var w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.getElementsByTagName("body")[0],
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight || e.clientHeight || g.clientHeight;
+
+    return { width: x, height: y };
+  },
+  setViewportDimensions: function() {
+    var viewportDimensions = this.getViewportDimensions();
+    this.windowHeight = viewportDimensions.height;
+    this.windowWidth = viewportDimensions.width;
+    this.windowRatio = this.windowWidth / this.windowHeight;
+  },
   isTouchDevice: function() {
     return "ontouchstart" in document.documentElement;
   },
@@ -14,7 +42,7 @@ var utilities = {
   getChildren: function(child, skipMe, elementClass) {
     var r = [];
     for (; child; child = child.nextSibling) {
-      if (child.nodeType == 1 && child != skipMe &&  child.classList.contains(elementClass)) {
+      if (child.nodeType == 1 && child != skipMe && child.classList.contains(elementClass)) {
         r.push(child);
       }
     }
@@ -25,3 +53,5 @@ var utilities = {
     return this.getChildren(element.parentNode.firstChild, element, elementClass);
   }
 };
+
+utilities.init();

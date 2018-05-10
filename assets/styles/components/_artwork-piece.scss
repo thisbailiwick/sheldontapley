@@ -72,10 +72,6 @@
             transition-duration: $zoom-transition-duration;
             transition-property: opacity;
             width: 100%;
-            // left: 50%;
-            // position: absolute; // -webkit-transform: translateX(-50%);
-            // transform: translate(-50%, 50%);
-            // top: -50%;
             &:hover {
                 cursor: zoom-in;
             }

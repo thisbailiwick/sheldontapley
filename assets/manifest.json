@@ -9,15 +9,15 @@
         "vendor/howler.js"
       ],
       "files": [
+        "scripts/utilities.js",
         "scripts/scroll-jack.js",
         "scripts/artwork-info.js",
         "scripts/st-audio.js",
-        "scripts/utilities.js",
         "scripts/magnifier.js",
-        "scripts/centered.js",
         "scripts/mousePosition.js",
         "scripts/zoomy.js",
         "scripts/mobile.js",
+        "scripts/centered.js",
         "scripts/main.js"
       ],
       "main": true

@@ -39,24 +39,12 @@ var mousePosition = {
   },
 
   // Find out where an element is on the page
-  // From http://www.quirksmode.org/js/findpos.html
   findPos: function(obj) {
-    var curleft = 0;
-    var curtop = 0;
-    if (obj.offsetParent) {
-      do {
-        curleft += obj.offsetLeft;
-        curtop += obj.offsetTop;
-      } while ((obj = obj.offsetParent));
-    }
-    return {
-      left: curleft,
-      top: curtop
-    };
+    var rect = obj.getBoundingClientRect();
+    return { top: rect.top + window.scrollY, left: rect.left + window.scrollX }
   },
 
   // Mouse position relative to the element
-  // not working on IE7 and below
   mousePositionElement: function(e) {
     var mousePosDoc = this.mousePositionDocument(e);
     var target = this.mouseTarget(e);
