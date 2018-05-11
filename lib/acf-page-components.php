@@ -101,7 +101,7 @@ function html_artwork_piece($content, $unique_id, $post) {
             <div class="piece-comparison">
               <span class="close">X</span>
               <div class="comparison-image-wrap">
-                <img class="comparison-image" src="{$image['url']}" alt="{$image['alt']}" data-width={$image['width']} data-height={$image['height']}/>
+                <img class="comparison-image" src="{$image['url']}" alt="{$image['alt']}" data-width="{$image['width']}" data-height="{$image['height']}" />
                 <div class="info-text">{$artwork_info_text}<p>, <span class="width">{$content['width']}</span> x <span class="height">{$content['height']}</span></p></div>
               </div>
               <img src="/wordpress/wp-content/themes/sheldontapley-anew/dist/images/sheldon-cutout.png" class="compared-to" />

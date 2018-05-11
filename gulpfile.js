@@ -139,7 +139,8 @@ var jsTasks = function (filename) {
 		.pipe(uglify, {
 			compress: {
 				'drop_debugger': enabled.stripJSDebug
-			}
+      },
+      mangle: false
 		})
 		.pipe(function () {
 			return gulpif(enabled.rev, rev());

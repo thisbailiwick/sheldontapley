@@ -181,4 +181,9 @@ body {
             overflow: hidden;
         }
     }
+    &.viewport-resizing{
+      .artwork_piece{
+        max-width: 100% !important;
+      }
+    }
 }
