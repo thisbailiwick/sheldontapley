@@ -86,6 +86,7 @@ HTML;
 function html_artwork_piece($content, $unique_id, $post) {
   $image = $content['artwork_piece'];
   $permalink = get_permalink($post->ID);
+  $artwork_info_text = trim($content['artwork_info_text']);
 
   $dev_share_buttons = get_dev_share_buttons(array('facebook', 'twitter', 'email', 'copy'), $permalink, $post->post_title, '', $image['url'], $post->ID);
   return <<<HTML
@@ -97,7 +98,14 @@ function html_artwork_piece($content, $unique_id, $post) {
               <div id="{$unique_id}" class="mouse-map" style="background-image: url('{$image['url']}'); background-size: {$image['width']}px {$image['height']}px"></div>
               {$dev_share_buttons}
             </div>
-            <div class="info-text"></div>
+            <div class="piece-comparison">
+              <span class="close">X</span>
+              <div class="comparison-image-wrap">
+                <img class="comparison-image" src="{$image['url']}" alt="{$image['alt']}" data-width={$image['width']} data-height={$image['height']}/>
+                <div class="info-text">{$artwork_info_text}<p>, <span class="width">{$content['width']}</span> x <span class="height">{$content['height']}</span></p></div>
+              </div>
+              <img src="/wordpress/wp-content/themes/sheldontapley-anew/dist/images/sheldon-cutout.png" class="compared-to" />
+            </div>
             <div class="artwork-meta">
               <div class="caption">{$content['caption_text']}</div>
               <div class="actions">

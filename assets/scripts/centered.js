@@ -187,28 +187,13 @@ var nakasentro = {
       }
     }
 
-    // console.log(imageRatio, utilities.windowRatio);
     if (imageRatio < utilities.windowRatio) {
       return "height";
     } else {
       return "width";
     }
   },
-  // setArtworkWidthHeightSupport: function(artwork) {
-  //   var ratioPercentage = 0;
-  //   var artworkImage = artwork.querySelector('.zoom-wrap img');
-  //   console.log(artworkImage.clientHeight);
-  //   if (this.viewportDimensions === "portrait") {
-  //     var ratioPercentage = (artworkImage.clientWidth / artworkImage.clientHeight) * 100;
-  //   } else {
-  //     var ratioPercentage = (artworkImage.clientHeight / artworkImage.clientWidth) * 100;
-  //   }
-  //   var widthHeightSupportElement = artwork.querySelector(
-  //     ".width-height-support"
-  //   );
-  //   widthHeightSupportElement.style.marginTop = ratioPercentage + "%";
-  //   artwork.querySelector('.zoom-wrap').style.position = "absolute";
-  // },
+
   setBodyClasses: function(classes) {
     document.querySelector("body").classList.add(classes);
   },
@@ -233,7 +218,6 @@ var nakasentro = {
   },
 
   setNewArtworkSize: function(artwork) {
-    // var img = artwork.element.querySelector("img");
     var rect = artwork.artworkImage.getBoundingClientRect();
     var distanceFromTopOfViewport = rect.top + rect.height / 2;
     var toCenterPixels = nakasentro.getPixelsToCenter(distanceFromTopOfViewport);
@@ -242,31 +226,11 @@ var nakasentro = {
     // TODO: this is about 51 pixels off, why?!
     toCenterPixelsAbsolute = toCenterPixelsAbsolute;
     var toCenterPercentage = nakasentro.getPercentageToCenter(toCenterPixelsAbsolute);
-    // console.log(toCenterPercentage);
 
     // if we're close to the centerpoint of an image, we trigger a scroll to
     if (toCenterPercentage < 3) {
       document.body.classList.add("centered-image", "centered-image-background-show");
       this.imageCentered = true;
-      // window.addEventListener('wheel', function(e){
-      //   e.preventDefault();
-      // });
-      // scrollJack.disableScroll();
-      // // scroll to artworkImage center point artworkImage.
-      // console.log('artwork.imageMaxHeightCenterPointFromDocTop: ' + artwork.imageMaxHeightCenterPointFromDocTop);
-      // console.log('window.scrollY: ' + window.scrollY);
-
-      // window.scrollTo({ top: artwork.imageMaxHeightCenterPointFromDocTop, left: 0, behavior: 'smooth' });
-      // window.setTimeout(function(){
-      //   scrollJack.enableScroll();
-      // }, 1000);
-
-      // document.body.classList.add("no-scroll");
-      // this.imageCentered = true;
-      // window.setTimeout(function() {
-      //   console.log("running timeout");
-      //   document.body.classList.remove("no-scroll");
-      // }, 0.25);
     } else {
       if (this.imageCentered === true) {
         // timeout matched to .image-centered-background transition-duration

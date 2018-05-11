@@ -6,8 +6,8 @@ zoomy = {
     this.reset();
     var buttons = document.querySelectorAll(".artwork_piece .actions .zoom").forEach(function(value, index) {
       var artworkPieceWrap = value.parentNode.parentNode.parentNode.parentNode;
-      var zoomyWrap = artworkPieceWrap.querySelector('.zoomy-wrap');
-      var mouseMapImage = artworkPieceWrap.querySelector('.mouse-map');
+      var zoomyWrap = artworkPieceWrap.querySelector(".zoomy-wrap");
+      var mouseMapImage = artworkPieceWrap.querySelector(".mouse-map");
       var img = artworkPieceWrap.firstElementChild;
       this.pictures.push({
         button: value,
@@ -36,11 +36,14 @@ zoomy = {
     }, zoomy);
   },
 
-  reset: function(){
+  reset: function() {
     this.pictures = Array();
   },
 
   toggleZoom: function(e) {
+    if(e.currentTarget.classList.contains('mouse-map')){
+      zoomy.mapMouseToImage.call(this, e);
+    }
     this.artworkPieceWrap.classList.toggle("zoomed");
     document.body.classList.toggle("zoomed");
     this.isZoomed = !this.isZoomed;
@@ -52,36 +55,27 @@ zoomy = {
       }
     }
 
-    if(this.isZoomed === true && zoomy.mouseMapEventsAdded === false){
+    if (this.isZoomed === true && zoomy.mouseMapEventsAdded === false) {
       zoomy.mouseMapEventsAdded = true;
       this.mouseMapImage.addEventListener("mousemove", this.mouseMoveHandler, false);
       this.mouseMapImage.addEventListener("touchmove", this.touchMoveHandler, false);
-    }else if(zoomy.mouseMapEventsAdded){
+    } else if (zoomy.mouseMapEventsAdded) {
       zoomy.mouseMapEventsAdded = false;
-      this.mouseMapImage.removeEventListener('mousemove', this.mouseMoveHandler, false);
-      this.mouseMapImage.removeEventListener('touchmove', this.touchMoveHandler, false);
+      this.mouseMapImage.removeEventListener("mousemove", this.mouseMoveHandler, false);
+      this.mouseMapImage.removeEventListener("touchmove", this.touchMoveHandler, false);
     }
   },
   mapMouseToImage: function(e) {
     var zoomyWrap = this.zoomyWrap;
-
     var position = mousePosition.mousePositionElement(e);
-    console.log('position:');
-    console.log(position);
-    // console.log('zoomyWrap.clientWidth: ' + zoomyWrap.clientWidth);
-    // console.log('zoomyWrap.clientHeight: ' + zoomyWrap.clientHeight);
-    // console.log(e);
     if (position.x > 0) {
-      var leftPercentage = position.x / zoomyWrap.clientWidth * 100;
-      var topPercentage = position.y / zoomyWrap.clientHeight * 100;
+      var leftPercentage = position.x / zoomyWrap.clientWidth * 101;
+      var topPercentage = position.y / zoomyWrap.clientHeight * 101;
       topPercentage = topPercentage < 0 ? 0 : topPercentage;
       topPercentage = topPercentage > 100 ? 100 : topPercentage;
       leftPercentage = leftPercentage < 0 ? 0 : leftPercentage;
       leftPercentage = leftPercentage > 100 ? 100 : leftPercentage;
-
       topValue = -(topPercentage * 0.01 * this.zoomedImageSizeHeight);
-
-      // console.log(topPercentage, leftPercentage);
 
       this.mouseMapImage.style.backgroundPosition = leftPercentage + "% " + topPercentage + "%";
     }
