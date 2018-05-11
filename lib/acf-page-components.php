@@ -93,7 +93,9 @@ function html_artwork_piece($content, $unique_id, $post) {
 			<div class="{$content['acf_fc_layout']}">
           <div class="image-wrap">
             <div class="image-centered-background"></div>
-            <img class="main-img" src="{$image['url']}" alt="{$image['alt']}" data-width={$image['width']} data-height={$image['height']}/>
+            <div class="image-space-placeholder">
+              <img class="main-img" src="{$image['url']}" alt="{$image['alt']}" data-width="{$image['width']}" data-height="{$image['height']}"/>
+            </div>
             <div class="zoomy-wrap">
               <div id="{$unique_id}" class="mouse-map" style="background-image: url('{$image['url']}'); background-size: {$image['width']}px {$image['height']}px"></div>
               {$dev_share_buttons}

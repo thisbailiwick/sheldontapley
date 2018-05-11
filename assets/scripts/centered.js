@@ -9,6 +9,7 @@ var nakasentro = {
   scrollBeingThrottled: false,
   isTouchDevice: false,
   isResizing: false,
+  consideredCenteredPercentage: 3,
 
   init: function() {
     //reset values
@@ -104,9 +105,11 @@ var nakasentro = {
 
     nakasentro.artworks_elements.forEach(function(artwork, index) {
       // var zoomWrap = artwork.querySelector('.zoom-wrap');
+      var artworkWrap = artwork;
       var artworkImageWrap = artwork.querySelector(".image-wrap");
       var artworkImage = artworkImageWrap.querySelector(".main-img");
       var zoomyWrap = artworkImageWrap.querySelector(".zoomy-wrap");
+      var imageSpacePlaceholder = artworkImageWrap.querySelector('.image-space-placeholder');
       // var mouseMapImage = artworkImageWrap.querySelector(".mouse-map");
 
       var artworkMetaWrap = artworkImageWrap.querySelector(".artwork-meta");
@@ -149,10 +152,11 @@ var nakasentro = {
         imageOffsetFromDocTop: imageOffsetFromDocTop,
         imageMaxHeight: imageMaxHeight,
         imageMaxHeightCenterPointFromDocTop: imageMaxHeightCenterPointFromDocTop,
-        // need next two for the zoom
+        artworkWrap: artworkWrap,
         artworkImageWrap: artworkImageWrap,
         artworkMetaWrap: artworkMetaWrap,
         zoomyWrap: zoomyWrap,
+        imageSpacePlaceholder: imageSpacePlaceholder,
         // mouseMapImage: mouseMapImage,
         originalDimensions: {
           width: artworkImage.clientWidth,
@@ -175,7 +179,7 @@ var nakasentro = {
     window.addEventListener("resize", this.debounceWindowResize);
     window.addEventListener("resize", function() {
       if (nakasentro.isResizing === false) {
-        document.body.classList.add('viewport-resizing');
+        document.body.classList.add("viewport-resizing");
         nakasentro.isResizing = true;
       }
     });
@@ -189,7 +193,7 @@ var nakasentro = {
       utilities.setViewportDimensions();
       nakasentro.setupValues();
     }
-    document.body.classList.remove('viewport-resizing');
+    document.body.classList.remove("viewport-resizing");
     nakasentro.isResizing = false;
   }, 250),
 
@@ -244,7 +248,7 @@ var nakasentro = {
   },
 
   setNewArtworkSize: function(artwork) {
-    var rect = artwork.artworkImage.getBoundingClientRect();
+    var rect = artwork.zoomyWrap.getBoundingClientRect();
     var distanceFromTopOfViewport = rect.top + rect.height / 2;
     var toCenterPixels = nakasentro.getPixelsToCenter(distanceFromTopOfViewport);
 
@@ -254,56 +258,77 @@ var nakasentro = {
     var toCenterPercentage = nakasentro.getPercentageToCenter(toCenterPixelsAbsolute);
 
     // if we're close to the centerpoint of an image, we trigger a scroll to
-    if (toCenterPercentage < 3) {
-      document.body.classList.add("centered-image", "centered-image-background-show");
-      this.imageCentered = true;
-    } else {
+    // console.log(toCenterPercentage, ">", nakasentro.consideredCenteredPercentage);
+    // console.log(toCenterPercentage > nakasentro.consideredCenteredPercentage);
+    if (toCenterPercentage > nakasentro.consideredCenteredPercentage) {
+      // console.log("going into regular processing");
       if (this.imageCentered === true) {
         // timeout matched to .image-centered-background transition-duration
+        this.imageCentered = false;
         document.body.classList.remove("centered-image");
+        artwork.artworkWrap.classList.remove("centered");
         window.setTimeout(function() {
           document.body.classList.remove("centered-image-background-show");
         }, 250);
-        this.imageCentered = false;
       }
-    }
 
-    // console.log(artwork.element.width, this.mainContentWidth);
-    var currentImageHeight = artwork.artworkImage.clientHeight;
-    var currentImageWidth = artwork.artworkImage.clientWidth;
-    var newLength = null;
+      var currentImageHeight = artwork.artworkImage.clientHeight;
+      var currentImageWidth = artwork.artworkImage.clientWidth;
+      var newLength = null;
 
-    if (artwork.imageSizeChangeTechnique === "width") {
-      // only change the length if it's larger than the original
       if (toCenterPercentage / 100 < artwork.artworkImage.imageVhValue) {
         toCenterPercentage = artwork.artworkImage.imageVhValue * 100;
       }
-      newLength = this.getNewLength(artwork, toCenterPercentage);
-      this.artworks[artwork.artworksIndex].dynamicImageValues.toCenterPercentage = toCenterPercentage;
-      this.artworks[artwork.artworksIndex].dynamicImageValues.imageCurrentWidth = newLength;
-      this.artworks[artwork.artworksIndex].dynamicImageValues.imageVhValueToFull = this.artworks[artwork.artworksIndex].dynamicImageValues.imageVhValueToFull - newLength;
-      this.resizePortrait(artwork, newLength);
+
+      if (artwork.imageSizeChangeTechnique === "width") {
+        // this is portrait or an image which is so short height wise it would still hit the left/right portions of the viewport before the top/bottom
+        this.setNewWidthValues.call(this, toCenterPercentage, artwork);
+      } else {
+        // this is landscape or an image which is so short width wise it would still hit the top/bottom portions of the viewport before the left/right
+        this.setNewHeightValues.call(this, toCenterPercentage, artwork);
+      }
     } else {
-      if (toCenterPercentage / 100 < artwork.artworkImage.imageVhValue) {
-        toCenterPercentage = artwork.artworkImage.imageVhValue * 100;
+      document.body.classList.add("centered-image", "centered-image-background-show");
+      // console.log("centered processing");
+      if (this.imageCentered === false) {
+        this.imageCentered = true;
+        artwork.artworkWrap.style.top = artwork.artworkWrap.getBoundingClientRect().top;
+        artwork.artworkWrap.classList.add("centered");
       }
 
-      newLength = this.getNewLength(artwork, toCenterPercentage);
-      this.artworks[artwork.artworksIndex].dynamicImageValues.toCenterPercentage = toCenterPercentage;
-      var imageNewHeight = newLength;
-      this.artworks[artwork.artworksIndex].dynamicImageValues.imageCurrentHeight = imageNewHeight;
-      this.artworks[artwork.artworksIndex].dynamicImageValues.imageVhValueToFull = this.artworks[artwork.artworksIndex].dynamicImageValues.imageVhValueToFull - newLength;
-      this.resizeLandscape(artwork, imageNewHeight);
+      if (artwork.imageSizeChangeTechnique === "width") {
+        // only change the length if it's larger than the original
+        this.resizePortrait(artwork, 100);
+      } else {
+        this.resizeLandscape(artwork, 100);
+      }
     }
   },
 
-  getNewLength: function(artwork, toCenterPercentage) {
+  setNewWidthValues: function(toCenterPercentage, artwork){
+    var newWidthLength = this.getNewLength(toCenterPercentage, artwork.originalDimensions.imageVwValue);
+    this.artworks[artwork.artworksIndex].dynamicImageValues.toCenterPercentage = toCenterPercentage;
+    this.artworks[artwork.artworksIndex].dynamicImageValues.imageCurrentWidth = newWidthLength;
+    this.artworks[artwork.artworksIndex].dynamicImageValues.imageVhValueToFull = this.artworks[artwork.artworksIndex].dynamicImageValues.imageVhValueToFull - newWidthLength;
+    this.resizePortrait(artwork, newWidthLength);
+  },
+  setNewHeightValues: function(toCenterPercentage, artwork){
+    newLength = this.getNewLength(toCenterPercentage, artwork.originalDimensions.imageVhValue);
+    this.artworks[artwork.artworksIndex].dynamicImageValues.toCenterPercentage = toCenterPercentage;
+    var imageNewHeight = newLength;
+
+    this.artworks[artwork.artworksIndex].dynamicImageValues.imageCurrentHeight = imageNewHeight;
+    this.artworks[artwork.artworksIndex].dynamicImageValues.imageVhValueToFull = this.artworks[artwork.artworksIndex].dynamicImageValues.imageVhValueToFull - newLength;
+    this.resizeLandscape(artwork, imageNewHeight);
+  },
+
+  getNewLength: function(toCenterPercentage, originalDimensionValue) {
     // @t is the current time (or position) of the tween. This can be seconds or frames, steps, seconds, ms, whatever – as long as the unit is the same as is used for the total time [3].
     // @b is the beginning value of the property.
     // @c is the change between the beginning and destination value of the property.
     // @d is the total time of the tween.
     // TODO: Figure out a better name for lengthValue
-    var lengthValue = this.browserOrientation === "portrait" ? artwork.originalDimensions.imageVwValue : artwork.originalDimensions.imageVhValue;
+    // var lengthValue = this.browserOrientation === "portrait" ? artwork.originalDimensions.imageVwValue : artwork.originalDimensions.imageVhValue;
     // lengthValue = lengthValue * .45;
 
     // var w = window,
@@ -318,8 +343,8 @@ var nakasentro = {
 
     var toCenterPercentagePassed = 100 - toCenterPercentage;
     var t = toCenterPercentagePassed;
-    var b = lengthValue;
-    var c = 100 - lengthValue;
+    var b = originalDimensionValue;
+    var c = 100 - originalDimensionValue;
     var d = 100;
     // console.log(t, b, c, d);
     var newLength = c * t / d + b;
@@ -338,8 +363,10 @@ var nakasentro = {
       artwork.artworkImage.style.width = width;
       artwork.zoomyWrap.style.height = imageHeight;
       artwork.zoomyWrap.style.width = width;
-      // artwork.zoomyWrap.style.marginLeft = -(imageWidth/2) + 'px';
       artwork.artworkMetaWrap.style.width = imageWidth + "px";
+
+      //this helper div keeps the vertical space when the image is centered and the image itself is positioned 'fixed'
+      artwork.imageSpacePlaceholder.style.height = imageNewWidth / artwork.originalDimensions.imageRatio + 'vh';
     }
   },
 

@@ -32,6 +32,7 @@
         .artwork-meta {
             display: flex;
             position: static;
+            text-align: left;
             top: 100%;
             width: 100%;
         }
@@ -44,7 +45,7 @@
             display: flex;
             justify-content: center;
             left: 0;
-            padding: 3vh;
+            padding: 3vh 3vh 0 3vh;
             position: fixed;
             right: 0;
             top: 0;
@@ -139,6 +140,57 @@
       .main-img {
           opacity: 0;
       }
+  }
+
+  &.centered{
+    .main-img{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      right: 0;
+      z-index: 2;
+      transform: translate(-50%, -50%) perspective(1px);
+    }
+
+    .zoomy-wrap{
+      left: 0;
+    }
+
+    .artwork-meta{
+      align-items: flex-end;
+      bottom: calc( -100vh + 52px );
+      height: 100vh;
+      left: 0;
+      padding: 0 20px;
+      position: fixed;
+      right: 0;
+      z-index: 4;
+      transition-duration: .25s;
+      top: unset;
+      width: calc(95% - 200px) !important;
+
+      .actions{
+        bottom: 0px;
+        position: fixed;
+        right: 0;
+      }
+
+
+      .caption p{
+        background: rgba(0,0,0,.8);
+        color: #fff;
+        opacity: 0;
+      }
+
+      &:hover{
+        bottom: 0;
+
+        .caption p{
+          opacity: 1;
+        }
+      }
+    }
+
   }
 }
 
