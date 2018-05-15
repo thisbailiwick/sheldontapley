@@ -87,6 +87,8 @@ function html_artwork_piece($content, $unique_id, $post) {
   $image = $content['artwork_piece'];
   $permalink = get_permalink($post->ID);
   $artwork_info_text = trim($content['artwork_info_text']);
+  $compare_image_height = get_field('compare_height_in_inches', 'options')['compare_height_in_inches'];
+  $compare_image_width = get_field('compare_width_in_inches', 'options')['compare_width_in_inches'];
 
   $dev_share_buttons = get_dev_share_buttons(array('facebook', 'twitter', 'email', 'copy'), $permalink, $post->post_title, '', $image['url'], $post->ID);
   return <<<HTML
@@ -103,7 +105,7 @@ function html_artwork_piece($content, $unique_id, $post) {
             <div class="piece-comparison">
               <span class="close">X</span>
               <div class="comparison-image-wrap">
-                <img class="comparison-image" src="{$image['url']}" alt="{$image['alt']}" data-width="{$image['width']}" data-height="{$image['height']}" />
+                <img class="comparison-image" src="{$image['url']}" alt="{$image['alt']}" data-width="{$content['width']}" data-height="{$content['height']}" />
                 <div class="info-text">{$artwork_info_text}<p>, <span class="width">{$content['width']}</span> x <span class="height">{$content['height']}</span></p></div>
               </div>
               <img src="/wordpress/wp-content/themes/sheldontapley-anew/dist/images/sheldon-cutout.png" class="compared-to" />
@@ -112,7 +114,7 @@ function html_artwork_piece($content, $unique_id, $post) {
               <div class="caption">{$content['caption_text']}</div>
               <div class="actions">
                 <div class="zoom fas fa-search-plus" data-large-image="{$image['url']}" data-zoom-unique-id="{$unique_id}"></div>
-                <div class="info fas fa-info-circle"></div>
+                <div class="info fas fa-info-circle" data-width="{$content['width']}" data-height="{$content['height']}" data-compare-height-inches="{$compare_image_height}" data-compare-width-inches="{$compare_image_width}"></div>
                 <div class="share fas fa-share-square"></div>
               </div>
             </div>

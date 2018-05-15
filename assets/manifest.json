@@ -14,6 +14,7 @@
         "scripts/artwork-info.js",
         "scripts/st-audio.js",
         "scripts/magnifier.js",
+        "scripts/more-info.js",
         "scripts/mousePosition.js",
         "scripts/zoomy.js",
         "scripts/mobile.js",
