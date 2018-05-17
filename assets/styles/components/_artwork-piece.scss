@@ -20,7 +20,8 @@
       position: relative;
       transition-duration: $zoom-transition-duration;
       transition-property: opacity;
-    } // .zoomy-wrap {
+    }
+    // .zoomy-wrap {
     //     display: block;
     //     position: relative;
     //     margin: 0 auto;
@@ -28,7 +29,7 @@
     .caption {
       display: inline-block;
       margin-right: 1%;
-      width: calc( 100% - 131px);
+      width: calc(100% - 131px);
     }
     .artwork-meta {
       display: flex; // position: absolute;
@@ -60,12 +61,12 @@
       min-width: $main-content-max-width;
     }
     .piece-comparison {
-      align-items: flex-end;
+      $piece-comparison-padding: 3vh;
       background: #fff;
       display: flex;
-      justify-content: center;
       left: 0;
-      padding: 3vh 3vh 0 3vh;
+      margin: 0;
+      padding: 0;
       position: fixed;
       right: 0;
       top: 0;
@@ -73,18 +74,36 @@
       transition-duration: .5s;
       z-index: 400;
       height: 100vh;
-      .comparison-image-wrap {
-        max-height: 100%;
-        position: relative;
-        height: 100%;
+
+      .piece-comparison-wrap {
+        align-items: flex-end;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        height: 100%;
+        justify-content: space-around;
+        margin: $piece-comparison-padding $piece-comparison-padding 0 $piece-comparison-padding;
+        //margin: 0;
+        overflow: hidden;
+        padding: 0;
+        width: 100%;
+      }
+
+      .comparison-image-wrap {
         align-items: center;
+        flex-direction: column;
+        flex-grow: 0;
+        float: left;
+        display: flex;
+        justify-content: flex-end;
+        max-height: 100%;
+        //overflow: hidden;
+        padding-bottom: $piece-comparison-padding;
+        position: relative;
         .comparison-image {
-          height: auto;
-          width: 100%;
           flex-shrink: 1;
+          height: auto;
+          max-height: none;
+          max-width: none;
+          width: 100%;
         }
         .info-text {
           p {
@@ -93,7 +112,10 @@
         }
       }
       .compared-to {
+        float: right;
         height: auto;
+        max-height: none;
+        max-width: none;
         width: 30vw;
       }
       .close {
@@ -181,7 +203,8 @@
       height: auto;
       z-index: 100; // width: calc(95% - 200px) !important;
       width: 100%;
-      .actions {}
+      .actions {
+      }
       .caption {
         margin-right: 0;
         p {
@@ -213,7 +236,8 @@
 body.orientation-landscape {
   .artwork_piece {
     .zoom-wrap {
-      img {}
+      img {
+      }
     }
   }
 }
@@ -226,7 +250,7 @@ body.artworks-processed {
 
 body {
   &.centered-image-background-show {
-    .main>div {
+    .main > div {
       transition-duration: .25s;
     }
     .image-centered-background {
@@ -246,7 +270,7 @@ body {
     .actions div {
       // color: #fff;
     }
-    .main>div {
+    .main > div {
       opacity: 0;
       &.centered {
         opacity: 1 !important;
@@ -274,17 +298,18 @@ body {
           position: fixed;
           right: -1px !important;
           top: unset;
-          >div {
+          > div {
             display: block;
           }
         }
       }
     }
-    &.zoomed{
-      .artwork-meta{
+    &.zoomed {
+      .artwork-meta {
         z-index: 0;
       }
     }
   }
-  &.orientation-portrait {}
+  &.orientation-portrait {
+  }
 }

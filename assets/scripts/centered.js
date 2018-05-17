@@ -1,5 +1,4 @@
 var nakasentro = {
-  browserOrientation: null,
   fullscreen: document.querySelector(".fullscreen"),
   fullscreenWrapper: document.querySelector('.fullscreen-wrapper'),
   artworks_elements: document.querySelectorAll(".artwork_piece"),
@@ -81,7 +80,6 @@ var nakasentro = {
   },
   reset: function () {
     // set values back to initial setup
-    this.browserOrientation = null;
     this.fullscreen = document.querySelector(".fullscreen");
     this.artworks_elements = document.querySelectorAll(".artwork_piece");
     this.artworks = Array();
@@ -122,11 +120,9 @@ var nakasentro = {
   setupValues: function () {
     this.reset();
 
-    this.browserOrientation = this.getBrowserOrientation();
-
     this.mainContentWidth = this.mainContentWrap.clientWidth;
 
-    this.setBodyClasses("orientation-" + this.browserOrientation);
+    this.setBodyClasses("orientation-" + utilities.browserOrientation);
 
     nakasentro.artworks_elements.forEach(function (artwork, index) {
       // var zoomWrap = artwork.querySelector('.zoom-wrap');
@@ -153,7 +149,7 @@ var nakasentro = {
       }
       var imageVhValueToFull = 100 - imageVhValue;
 
-      var imageSizeChangeTechnique = this.getImageSizeChangeTechnique(artworkImage);
+      var imageSizeChangeTechnique = utilities.getImageSizeChangeTechnique(artworkImage);
       var imageRatio = artworkImage.clientWidth / artworkImage.clientHeight;
 
       var imageMaxHeight = null;
@@ -231,30 +227,8 @@ var nakasentro = {
     }
   },
 
-  getImageSizeChangeTechnique: function (artworkImage) {
-    // figure out which way to change image size
-    var imageRatio = artworkImage.clientWidth / artworkImage.clientHeight;
-    if (this.browserOrientation === "landscape") {
-      if (imageRatio > utilities.windowRatio) {
-        return "width";
-      } else {
-        return "height";
-      }
-    }
-
-    if (imageRatio < utilities.windowRatio) {
-      return "height";
-    } else {
-      return "width";
-    }
-  },
-
   setBodyClasses: function (classes) {
     document.querySelector("body").classList.add(classes);
-  },
-
-  getBrowserOrientation: function () {
-    return utilities.windowHeight > utilities.windowWidth ? "portrait" : "landscape";
   },
 
   getPixelsToCenter: function (distanceFromTopOfViewport) {

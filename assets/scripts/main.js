@@ -16,20 +16,21 @@
     // All pages
     common: {
       init: function () {
-        // spin up artwork animation
-        nakasentro.init();
-
-        //spin up zoomy
-        zoomy.init();
-
-        // spin up share
-        share.init();
-
-        //spin up audio
-        stAudio.init();
-
-        //spin up more info buttons
-        moreInfo.init();
+        // // spin up artwork animation
+        // nakasentro.init();
+        //
+        // //spin up zoomy
+        // zoomy.init();
+        //
+        // // spin up share
+        // share.init();
+        //
+        // //spin up audio
+        // stAudio.init();
+        //
+        // //spin up more info buttons
+        // artworkInfo.init();
+        // moreInfo.init();
 
         var playVideo = function () {
           var iframeCode = this.getAttribute("data-embed");
@@ -86,9 +87,7 @@
         // setup resize event after user stops resizing
         var resize_event = debounce(function () {
           // things to run after resize
-          // possibly
-          // 	$carousel.flickity('destroy');
-          // 	init_slider();
+          moreInfo.init();
         }, 500);
 
         window.addEventListener("resize", resize_event);
@@ -109,18 +108,21 @@
           namespace: "common",
           onEnterCompleted: function () {
             // The Transition has just finished.
-            // set up artwork animation and zooming
-            nakasentro.init();
-            zoomy.init();
+	          // spin up artwork animation
+	          nakasentro.init();
 
-            // set up shar buttons
-            share.init();
+	          //spin up zoomy
+	          zoomy.init();
 
-            //spin up audio
-            stAudio.init();
+	          // spin up share
+	          share.init();
 
-            //spin up more info buttons
-            moreInfo.init();
+	          //spin up audio
+	          stAudio.init();
+
+	          //spin up more info buttons
+	          artworkInfo.init();
+	          moreInfo.init();
           },
           onLeave: function () {
             stAudio.stopAllPlayers();
