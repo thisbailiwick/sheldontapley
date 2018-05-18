@@ -12,8 +12,8 @@ var moreInfo = {
 			// piece image
 			// var {piece, pieceImageNaturalWidth, pieceImageNaturalHeight, pieceWidthInches, pieceHeightInches, pieceHeightImageRatio, pieceWidthImageRatio} = this.getImageDimensions(pieceComparisonWrap, button);
 			var piece = pieceComparisonWrap.querySelector(".comparison-image");
-			var pieceScaleWidthInches = button.getAttribute("data-width");
-			var pieceImageDimensions = this.getImageDimensions(piece, pieceScaleWidthInches);
+			var pieceWidthInches = button.getAttribute("data-width");
+			var pieceImageDimensions = this.getImageDimensions(piece, pieceWidthInches);
 			// console.log('pieceComparisonWrapHeightPixels > window.innerHeight: ' + pieceComparisonWrapHeightPixels, window.innerHeight);
 			// if(pieceComparisonWrapHeightPixels > window.innerHeight){
 			// 	pieceComparisonWrapHeightPixels = window.innerHeight;
@@ -42,30 +42,67 @@ var moreInfo = {
 			forScale.style.height = dimensionValues.forScaleHeightPixels + "px";
 		}, this);
 	},
-	getImageDimensions: function (image, scaleWidthInches) {
+	getImageDimensions: function (image, widthInches) {
 		var fileNaturalWidth = image.naturalWidth;
 		var fileNaturalHeight = image.naturalHeight;
 		var naturalFileRatio = fileNaturalWidth / fileNaturalHeight;
 		// var heightInches = button.getAttribute("data-height");
-		var heightInches = scaleWidthInches / naturalFileRatio;
-		var heightRatioInches = heightInches / scaleWidthInches;
-		var widthRatioInches = scaleWidthInches / heightInches;
+		var heightInches = widthInches / naturalFileRatio;
+		var heightRatioInches = heightInches / widthInches;
+		var widthRatioInches = widthInches / heightInches;
 		return {
 			image: image,
 			fileNaturalWidth: fileNaturalWidth,
 			fileNaturalHeight: fileNaturalHeight,
-			scaleWidthInches: scaleWidthInches,
 			heightInches: heightInches,
 			heightRatioInches: heightRatioInches,
+			widthInches: widthInches,
 			widthRatioInches: widthRatioInches
 		};
 	},
-	getNewValue: function(value){
+	getNewValue: function (value) {
+		// return value - 1;
 		return value * .997531;
+	},
+	logDimensionInfo: function (dimensionValues, originalHeightRatio, originalWidthRatio) {
+		console.log('piece forscale height ratio: ' + dimensionValues.pieceHeightPixels / dimensionValues.forScaleHeightPixels);
+		console.log('piece forscale width ratio: ' + dimensionValues.pieceWidthPixels / dimensionValues.forScaleWidthPixels);
+		console.log('original height ratio: ' + originalHeightRatio);
+		console.log('original width ratio: ' + originalWidthRatio);
+		console.log('piece forscale height ratio % change: ' + (100 - (originalHeightRatio / (dimensionValues.pieceHeightPixels / dimensionValues.forScaleHeightPixels) * 100)) + '%');
+		console.log('piece forscale width ratio % change: ' + (100 - (originalWidthRatio / (dimensionValues.pieceWidthPixels / dimensionValues.forScaleWidthPixels) * 100)) + '%');
+		console.log("pieceComparisonWrapHeightPixels: " + dimensionValues.pieceComparisonWrapHeightPixels);
+		console.log('pieceWidthPixels--: ' + dimensionValues.pieceWidthPixels);
+		console.log("pieceHeightPixels--: " + dimensionValues.pieceHeightPixels);
+		console.log('pieceRatio: ' + dimensionValues.pieceWidthPixels / dimensionValues.pieceHeightPixels);
+		console.log('forScaleWidthPixels--: ' + dimensionValues.forScaleWidthPixels);
+		console.log("forScaleHeightPixels-- " + dimensionValues.forScaleHeightPixels);
+		console.log('forscale ratio: ' + dimensionValues.forScaleWidthPixels / dimensionValues.forScaleHeightPixels);
+		console.log('');
+		console.log('');
 	},
 	recalculateNewDimensions: function (dimensionValues) {
 		var originalHeightRatio = dimensionValues.pieceHeightPixels / dimensionValues.forScaleHeightPixels;
 		var originalWidthRatio = dimensionValues.pieceWidthPixels / dimensionValues.forScaleWidthPixels;
+
+		// if (dimensionValues.forScaleHeightPixels > dimensionValues.pieceComparisonWrapHeightPixels || dimensionValues.pieceHeightPixels > dimensionValues.pieceComparisonWrapHeightPixels) {
+		// 	// which image is taller
+		// 	var pieceIsTaller = dimensionValues.pieceHeightPixels > dimensionValues.forScaleHeightPixels;
+		// 	var shorterImage = 'pieceHeightPixels'
+		// 	                   ? 'pieceHeightPixels'
+		// 	                   : 'forScaleHeightPixels';
+		// 	if (pieceIsTaller) {
+		// 		dimensionValues.pieceHeightPixels = dimensionValues.pieceComparisonWrapHeightPixels;
+		// 		dimensionValues.forScaleHeightPixels = dimensionValues.pieceHeightPixels * dimensionValues.pieceToScaleHeightRatio;
+		// 	} else {
+		//
+		// 	}
+		//
+		// }
+		//
+		//
+		// // which image is wider
+
 		do {
 			dimensionValues.pieceWidthPixels = this.getNewValue(dimensionValues.pieceWidthPixels);
 			// dimensionValues.pieceHeightPixels = this.getNewValue(dimensionValues.pieceHeightPixels);
@@ -75,23 +112,7 @@ var moreInfo = {
 			// dimensionValues.forScaleHeightPixels = this.getNewValue(dimensionValues.forScaleHeightPixels);
 			dimensionValues.forScaleHeightPixels = this.getImageHeightPixels(dimensionValues.forScaleWidthPixels, dimensionValues.forScaleHeightImageRatio);
 
-
-
-			// console.log('piece forscale height ratio: ' + dimensionValues.pieceHeightPixels / dimensionValues.forScaleHeightPixels);
-			// console.log('piece forscale width ratio: ' + dimensionValues.pieceWidthPixels / dimensionValues.forScaleWidthPixels);
-			// console.log('original height ratio: ' + originalHeightRatio);
-			// console.log('original width ratio: ' + originalWidthRatio);
-			// console.log('piece forscale height ratio % change: ' + (100 - (originalHeightRatio / (dimensionValues.pieceHeightPixels / dimensionValues.forScaleHeightPixels) * 100)) + '%');
-			// console.log('piece forscale width ratio % change: ' + (100 - (originalWidthRatio / (dimensionValues.pieceWidthPixels / dimensionValues.forScaleWidthPixels) * 100)) + '%');
-			// console.log("pieceComparisonWrapHeightPixels: " + dimensionValues.pieceComparisonWrapHeightPixels);
-			// console.log('pieceWidthPixels--: ' + dimensionValues.pieceWidthPixels);
-			// console.log("pieceHeightPixels--: " + dimensionValues.pieceHeightPixels);
-			// console.log('pieceRatio: ' + dimensionValues.pieceWidthPixels / dimensionValues.pieceHeightPixels);
-			// console.log('forScaleWidthPixels--: ' + dimensionValues.forScaleWidthPixels);
-			// console.log("forScaleHeightPixels-- " + dimensionValues.forScaleHeightPixels);
-			// console.log('forscale ratio: ' + dimensionValues.forScaleWidthPixels / dimensionValues.forScaleHeightPixels);
-			// console.log('');
-			// console.log('');
+			this.logDimensionInfo(dimensionValues, originalHeightRatio, originalWidthRatio);
 		} while (
 			//make sure piece height is shorter than piece comparison wrap height
 		dimensionValues.pieceHeightPixels > dimensionValues.pieceComparisonWrapHeightPixels ||
@@ -105,11 +126,11 @@ var moreInfo = {
 			forScaleHeightPixels: dimensionValues.forScaleHeightPixels
 		};
 	},
-	getImageHeightPixels: function(imageWidthPixels, imageHeightRatio){
+	getImageHeightPixels: function (imageWidthPixels, imageHeightRatio) {
 		return imageWidthPixels * imageHeightRatio;
 	},
-	getImageWidthPixels: function (imageHeightPixels, imageWidtheRatio) {
-		return Math.floor(imageHeightPixels * imageWidtheRatio);
+	getImageWidthPixels: function (imageHeightPixels, imageWidthRatio) {
+		return Math.floor(imageHeightPixels * imageWidthRatio);
 	},
 	// getPieceHeightPixels: function (pieceWidthPixels, pieceHeightImageRatio) {
 	// 	return pieceWidthPixels * pieceHeightImageRatio;
@@ -128,9 +149,6 @@ var moreInfo = {
 	// calculateNewDimensions: function (pieceWidthInches, pieceImageNaturalWidth, pieceImageNaturalHeight, forScaleWidthInches, pieceHeightInches, forScaleHeightInches, pieceComparisonWrapWidthPixels, pieceComparisonWrapHeightPixels, pieceHeightImageRatio, pieceWidthImageRatio, forScaleHeightImageRatio, pieceImage, forScale, pieceComparisonWrap) {
 	calculateNewDimensions: function (pieceDimensions, forScaleDimensions, pieceComparisonWrapWidthPixels, pieceComparisonWrapHeightPixels, pieceComparisonWrap) {
 		console.log(pieceComparisonWrapWidthPixels);
-		// this is the ratio of piece width to forscale width
-		// var pieceScaleWidthRatio = pieceWidthInches / forScaleWidthInches;
-		// var pieceScaleHeightRatio = pieceHeightInches / forScaleHeightInches;
 
 		// if the image rotation is portrait we find who is the widest, if landscape then we find who is tallest
 		// we then set the baseline height or width to the spacing we have from pieceComparisonWrapHeightPixels or pieceComparisonWrapWidthPixels
@@ -164,25 +182,16 @@ var moreInfo = {
 			pieceWidthPixels = this.getImageWidthPixels(pieceHeightPixels, pieceDimensions.widthRatioInches);
 
 		}
+
+		// this is the ratio of piece width to forscale width
+		var pieceToScaleWidthRatio = pieceDimensions.widthInches / forScaleDimensions.widthInches;
+		var pieceToScaleHeightRatio = pieceDimensions.heightInches / forScaleDimensions.heightInches;
+
 		// forscale values based off of the piece amounts relative to the piece/forscale ratio
+		// var forScaleWidthPixels = Math.floor(pieceWidthPixels * pieceToScaleWidthRatio);
+		// var forScaleHeightPixels = Math.floor(pieceHeightPixels * pieceToScaleHeightRatio);
 		var forScaleWidthPixels = Math.floor(pieceWidthPixels * forScaleDimensions.widthRatioInches);
 		var forScaleHeightPixels = Math.floor(pieceHeightPixels * forScaleDimensions.heightRatioInches);
-
-
-		// console.log("forScaleScreenWidthPercentage * widthRatio:  " + forScaleScreenWidthPercentage, pieceScaleWidthRatio);
-		// var newWidthPercentage = forScaleScreenWidthPercentage * pieceScaleWidthRatio;
-		// var pieceWidthPixels = pieceComparisonWrapWidthPixels * (newWidthPercentage / 100);
-		// var forScaleWidthPixels = pieceComparisonWrapWidthPixels * (forScaleScreenWidthPercentage / 100);
-		// var dimensionValues = {
-		// 	pieceWidthPixels: Math.floor(pieceWidthPixels),
-		// 	pieceHeightPixels: this.getPieceHeightPixels(pieceWidthPixels, pieceHeightImageRatio),
-		// 	forScaleWidthPixels: Math.floor(forScaleWidthPixels),
-		// 	forScaleHeightPixels: this.getForScaleHeightPixels(forScaleWidthPixels, forScaleHeightImageRatio),
-		// 	forScaleHeightImageRatio: forScaleHeightImageRatio,
-		// 	pieceHeightImageRatio: pieceHeightImageRatio,
-		// 	pieceComparisonWrapWidthPixels: pieceComparisonWrapWidthPixels,
-		// 	pieceComparisonWrapHeightPixels: pieceComparisonWrapHeightPixels
-		// };
 
 		var dimensionValues = {
 			pieceWidthPixels: Math.floor(pieceWidthPixels),
@@ -192,7 +201,9 @@ var moreInfo = {
 			forScaleHeightImageRatio: forScaleDimensions.heightRatioInches,
 			pieceHeightImageRatio: pieceDimensions.heightRatioInches,
 			pieceComparisonWrapWidthPixels: pieceComparisonWrapWidthPixels,
-			pieceComparisonWrapHeightPixels: pieceComparisonWrapHeightPixels
+			pieceComparisonWrapHeightPixels: pieceComparisonWrapHeightPixels,
+			pieceToScaleWidthRatio: pieceToScaleWidthRatio,
+			pieceToScaleHeightRatio: pieceToScaleHeightRatio
 		};
 		// console.log("newWidthPercentage: " + newWidthPercentage);
 		console.log('dimensionValues before object.assign: ', JSON.stringify(dimensionValues));

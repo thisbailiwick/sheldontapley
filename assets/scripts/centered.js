@@ -65,9 +65,6 @@ var nakasentro = {
       window.removeEventListener('keydown', this.handlePossibleScrollTrigger, false);
       artwork.zoomyWrap.removeEventListener('mousewheel', this.fullscreenHandleZoomyDivScoll, false);
     }
-
-
-
   },
   mobileSettings: function () {
     // TODO: is this necessary?
@@ -124,7 +121,7 @@ var nakasentro = {
 
     this.setBodyClasses("orientation-" + utilities.browserOrientation);
 
-    nakasentro.artworks_elements.forEach(function (artwork, index) {
+    nakasentro.artworks_elements.forEach(function (artwork) {
       // var zoomWrap = artwork.querySelector('.zoom-wrap');
       var artworkWrap = artwork;
       var artworkImageWrap = artwork.querySelector(".image-wrap");
@@ -139,6 +136,7 @@ var nakasentro = {
 
       // we need to compare the ratio of the viewport to the ratio of the image.
       // debugger;
+	    console.log(artworkImage.clientWidth, artworkImage.clientHeight);
       artworkImage.style.minHeight = artworkImage.clientHeight + "px";
       artworkImage.style.minWidth = artworkImage.clientWidth + "px";
       var imageVhValue = artworkImage.clientHeight / utilities.windowHeight * 100;
