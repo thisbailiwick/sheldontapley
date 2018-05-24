@@ -34,7 +34,7 @@ var artworkInfo = {
 		// 	});
 		// }, 0);
 		// disable or enbale scrolling
-		console.log(window.innerHeight);
+		// console.log(window.innerHeight);
 		if (artworkInfo.showing) {
 			scrollJack.clearAllBodyScrollLocks();
 		} else {

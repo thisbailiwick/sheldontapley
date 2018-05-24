@@ -88,7 +88,7 @@
 				var resize_event = debounce(function () {
 					// things to run after resize
 					moreInfo.init();
-				}, 500);
+				}, 300);
 
 				window.addEventListener("resize", resize_event);
 
@@ -107,7 +107,7 @@
 				var CommonView = Barba.BaseView.extend({
 					namespace: "common",
 					onEnterCompleted: function () {
-						window.onload = function () {
+						// window.onload = function () {
 							// The Transition has just finished.
 							// spin up artwork animation
 							nakasentro.init();
@@ -124,7 +124,7 @@
 							//spin up more info buttons
 							artworkInfo.init();
 							moreInfo.init();
-						}
+						// }
 					},
 					onLeave: function () {
 						stAudio.stopAllPlayers();

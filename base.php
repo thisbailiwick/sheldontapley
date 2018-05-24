@@ -42,6 +42,6 @@ use Roots\Sage\Wrapper;
 				?>
             </div>
         </div>
-        <div id="zoom-here"></div>
+        <div id="body-overlay"></div>
     </body>
 </html>

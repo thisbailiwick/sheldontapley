@@ -1,6 +1,7 @@
 .audio {
   margin-top: 73px;
   padding: 0 23px;
+  position: relative;
 
   .audio-piece {
     .duration, .timer{
@@ -11,11 +12,11 @@
       position: absolute;
       
       &.timer{
-        left: 0;
+        left: -2em;
       }
 
       &.duration{
-        right: 0;
+        right: -2em;
       }
     }
     

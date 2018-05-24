@@ -5,6 +5,7 @@ var moreInfo = {
 		this.infoButtons.forEach(function (button) {
 			var imageWrap = button.closest(".image-wrap");
 			var pieceComparisonWrap = imageWrap.querySelector(".piece-comparison-wrap");
+			pieceComparisonWrap.style.width = '';
 
 			var pieceComparisonWrapWidthPixels = pieceComparisonWrap.clientWidth;
 			var pieceComparisonWrapHeightPixels = pieceComparisonWrap.clientHeight;
@@ -112,7 +113,7 @@ var moreInfo = {
 			// dimensionValues.forScaleHeightPixels = this.getNewValue(dimensionValues.forScaleHeightPixels);
 			dimensionValues.forScaleHeightPixels = this.getImageHeightPixels(dimensionValues.forScaleWidthPixels, dimensionValues.forScaleHeightImageRatio);
 
-			this.logDimensionInfo(dimensionValues, originalHeightRatio, originalWidthRatio);
+			// this.logDimensionInfo(dimensionValues, originalHeightRatio, originalWidthRatio);
 		} while (
 			//make sure piece height is shorter than piece comparison wrap height
 		dimensionValues.pieceHeightPixels > dimensionValues.pieceComparisonWrapHeightPixels ||
@@ -148,8 +149,7 @@ var moreInfo = {
 	// },
 	// calculateNewDimensions: function (pieceWidthInches, pieceImageNaturalWidth, pieceImageNaturalHeight, forScaleWidthInches, pieceHeightInches, forScaleHeightInches, pieceComparisonWrapWidthPixels, pieceComparisonWrapHeightPixels, pieceHeightImageRatio, pieceWidthImageRatio, forScaleHeightImageRatio, pieceImage, forScale, pieceComparisonWrap) {
 	calculateNewDimensions: function (pieceDimensions, forScaleDimensions, pieceComparisonWrapWidthPixels, pieceComparisonWrapHeightPixels, pieceComparisonWrap) {
-		console.log(pieceComparisonWrapWidthPixels);
-
+		// console.log(pieceComparisonWrapWidthPixels);
 		// if the image rotation is portrait we find who is the widest, if landscape then we find who is tallest
 		// we then set the baseline height or width to the spacing we have from pieceComparisonWrapHeightPixels or pieceComparisonWrapWidthPixels
 		var widthBaseline = null;
@@ -157,8 +157,8 @@ var moreInfo = {
 
 		var pieceImageRotation = utilities.getImageSizeChangeTechnique(pieceDimensions.image, pieceComparisonWrap);
 		var forScaleImageRotation = utilities.getImageSizeChangeTechnique(forScaleDimensions.image, pieceComparisonWrap);
-		console.log(pieceImageRotation);
-		console.log(forScaleImageRotation);
+		// console.log(pieceImageRotation);
+		// console.log(forScaleImageRotation);
 
 		var pieceWidthPixels = null;
 		var pieceHeightPixels = null;
@@ -171,7 +171,7 @@ var moreInfo = {
 			pieceWidthPixels = widthBaseline;
 			pieceHeightPixels = this.getImageHeightPixels(pieceWidthPixels, pieceDimensions.heightRatioInches);
 
-			console.log('pieceScaleWidthRatio / pieceWidthPixels: ' + forScaleDimensions.widthRatioInches, pieceWidthPixels);
+			// console.log('pieceScaleWidthRatio / pieceWidthPixels: ' + forScaleDimensions.widthRatioInches, pieceWidthPixels);
 			// forscale values based off of the piece amounts relative to the piece/forscale ratio
 		} else {
 			heightBaseline = pieceComparisonWrapHeightPixels;
@@ -206,21 +206,23 @@ var moreInfo = {
 			pieceToScaleHeightRatio: pieceToScaleHeightRatio
 		};
 		// console.log("newWidthPercentage: " + newWidthPercentage);
-		console.log('dimensionValues before object.assign: ', JSON.stringify(dimensionValues));
+		// console.log('dimensionValues before object.assign: ', JSON.stringify(dimensionValues));
 
 
 		dimensionValues = Object.assign(this.recalculateNewDimensions(dimensionValues), dimensionValues);
 
 		// let's put some space between the images
 		var betweenImageMarginPixels = pieceComparisonWrapWidthPixels * .03;
-		console.log(betweenImageMarginPixels);
+		// console.log(betweenImageMarginPixels);
+		var totalWidth = dimensionValues.pieceWidthPixels + dimensionValues.forScaleWidthPixels;
+		pieceComparisonWrap.style.width = totalWidth + 'px';
 		dimensionValues.pieceWidthPixels = dimensionValues.pieceWidthPixels - betweenImageMarginPixels;
 		dimensionValues.forScaleWidthPixels = dimensionValues.forScaleWidthPixels - betweenImageMarginPixels;
 
 		// do the heights
 		dimensionValues.forScaleHeightPixels = this.getImageHeightPixels(dimensionValues.forScaleWidthPixels, dimensionValues.forScaleHeightImageRatio);
 		dimensionValues.pieceHeightPixels = this.getImageHeightPixels(dimensionValues.pieceWidthPixels, dimensionValues.pieceHeightImageRatio);
-		console.log('dimensionValues after object.assign: ', JSON.stringify(dimensionValues));
+		// console.log('dimensionValues after object.assign: ', JSON.stringify(dimensionValues));
 
 		return dimensionValues;
 	}

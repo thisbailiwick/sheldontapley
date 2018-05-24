@@ -1,8 +1,11 @@
 var utilities = {
 	windowHeight: null,
 	windowWidth: null,
-	windowRatio: null,
+	windowRatioWidth: null,
+	windowRatioHeight: null,
+	windowHalfHeight: null,
 	browserOrientation: null,
+	bodyOverlay: document.getElementById('body-overlay'),
 	init: function () {
 		this.setViewportDimensions();
 
@@ -23,8 +26,10 @@ var utilities = {
 	},
 	reset: function () {
 		this.windowHeight = null;
+		this.windowRatioHeight = null;
 		this.windowWidth = null;
-		this.windowRatio = null;
+		this.windowRatioWidth = null;
+		this.windowHalfHeight = null;
 		this.browserOrientation = null;
 	},
 	getViewportDimensions: function () {
@@ -42,7 +47,9 @@ var utilities = {
 		var viewportDimensions = this.getViewportDimensions();
 		this.windowHeight = viewportDimensions.height;
 		this.windowWidth = viewportDimensions.width;
-		this.windowRatio = this.windowWidth / this.windowHeight;
+		this.windowRatioWidth = this.windowWidth / this.windowHeight;
+		this.windowRatioHeight = this.windowHeight / this.windowWidth;
+		this.windowHalfHeight = this.windowHeight / 2;
 		this.browserOrientation = this.getBrowserOrientation();
 	},
 	isTouchDevice: function () {
@@ -72,30 +79,36 @@ var utilities = {
 	},
 
 	getImageSizeChangeTechnique: function (image, container, xPadding, yPadding) {
-		container = typeof container != 'undefined' ? container : null;
-		xPadding = typeof xPadding != 'undefined' ? xPadding : 0;
-		yPadding = typeof yPadding != 'undefined' ? yPadding : 0;
-		var containerRatio = null;
-		if(container !== null){
-			containerRatio = (container.clientWidth - xPadding) / (container.clientHeight - yPadding);
-		}else {
-			containerRatio = this.windowRatio;
+		container = typeof container != 'undefined'
+		            ? container
+		            : null;
+		xPadding = typeof xPadding != 'undefined'
+		           ? xPadding
+		           : 0;
+		yPadding = typeof yPadding != 'undefined'
+		           ? yPadding
+		           : 0;
+		var containerRatioWidth = null;
+		var containerRatioHeight = null;
+		if (container != null) {
+			// console.log('container not null');
+			containerRatioWidth = (container.clientWidth - xPadding) / (container.clientHeight - yPadding);
+		} else {
+			// console.log('container null');
+			containerRatioWidth = this.windowRatioWidth;
+			containerRatioHeight = this.windowRatioHeight;
+
 		}
 		// figure out which way to change image size
-		var imageRatio = image.clientWidth / image.clientHeight;
-		if (this.browserOrientation === "landscape") {
-			if (imageRatio > containerRatio) {
-				return "width";
-			} else {
-				return "height";
-			}
+		var imageRatioWidth = image.naturalWidth / image.naturalHeight;
+		var imageRatioHeight = image.naturalHeight / image.naturalWidth;
+
+		if (imageRatioWidth > containerRatioWidth) {
+			return "width";
+		} else if (imageRatioHeight > containerRatioHeight) {
+			return "height";
 		}
 
-		if (imageRatio < containerRatio) {
-			return "height";
-		} else {
-			return "width";
-		}
 	},
 
 	getBrowserOrientation: function () {
@@ -103,6 +116,14 @@ var utilities = {
 		       ? "portrait"
 		       : "landscape";
 	},
+
+	showOverlay: function () {
+		document.body.classList.add('show-body-overlay');
+	},
+
+	hideOverlay: function () {
+		document.body.classList.remove('show-body-overlay');
+	}
 };
 
 utilities.init();
