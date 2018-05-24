@@ -107,24 +107,45 @@
 				var CommonView = Barba.BaseView.extend({
 					namespace: "common",
 					onEnterCompleted: function () {
-						// window.onload = function () {
-							// The Transition has just finished.
+						// The Transition has just finished.
+
+
+						//spin up zoomy
+						zoomy.init();
+
+						// spin up share
+						share.init();
+
+						//spin up audio
+						stAudio.init();
+
+						// wait for images to load before spinning up the artwork animation
+						var images = document.querySelectorAll('.main img');
+						var imagesCount = images.length;
+						images.forEach(function (img) {
+							if (img.complete === true) {
+								imagesCount--;
+							} else {
+								img.addEventListener('load', function (e) {
+									imagesCount--;
+									checkIfImagesLoaded(imagesCount);
+								});
+							}
+							checkIfImagesLoaded(imagesCount);
+						});
+
+						function checkIfImagesLoaded(imagesCount) {
+							if (imagesCount === 0) {
+								initArtwork();
+							}
+						}
+
+						function initArtwork() {
 							// spin up artwork animation
 							nakasentro.init();
-
-							//spin up zoomy
-							zoomy.init();
-
-							// spin up share
-							share.init();
-
-							//spin up audio
-							stAudio.init();
-
-							//spin up more info buttons
 							artworkInfo.init();
 							moreInfo.init();
-						// }
+						}
 					},
 					onLeave: function () {
 						stAudio.stopAllPlayers();

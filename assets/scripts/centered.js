@@ -275,11 +275,11 @@ var nakasentro = {
 				// window.setTimeout(function () {
 				// 	nakasentro.recentlyAddedCenteredClasses = false;
 				// }, 250);
+
 				document.body.classList.add("centered-image", "centered-image-background-show");
 				// console.log('setting centered classes');
 				this.imageCentered = true;
 				// artwork.artworkWrap.style.top = artwork.artworkWrap.getBoundingClientRect().top;
-				// TODO: as of now, the centered-image-transition-duration doesn't do anything. We're going from a static to a fixed positioning, which doesn't allow for transition
 				artwork.artworkWrap.classList.add("centered", "centered-image-transition-duration");
 			}
 
