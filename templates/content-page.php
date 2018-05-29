@@ -5,6 +5,8 @@
 		$content = get_fields();
 		$sections = ACF_Page_Components\get_sections($content['general_page_content']);
 		echo $sections;
+	}else{
+	 the_content();
 	}
 
 

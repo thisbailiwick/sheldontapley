@@ -24,7 +24,7 @@ use Roots\Sage\Wrapper;
                 <div id="barba-wrapper"
                         class="wrap container"
                         role="document">
-                    <div class="content row barba-container">
+                    <div class="content row barba-container" data-namespace="common">
                         <main class="main">
 							<?php include Wrapper\template_path(); ?>
                         </main><!-- /.main -->

@@ -1,4 +1,3 @@
-
 /**
  * For modern browsers
  * 1. The space content is one way to avoid an Opera bug when the
@@ -10,12 +9,12 @@
  */
 .cf:before,
 .cf:after {
-	content: " "; /* 1 */
-	display: table; /* 2 */
+  content: " "; /* 1 */
+  display: table; /* 2 */
 }
 
 .cf:after {
-	clear: both;
+  clear: both;
 }
 
 /**
@@ -23,68 +22,62 @@
  * Include this rule to trigger hasLayout and contain floats.
  */
 .cf {
-	*zoom: 1;
+  *zoom: 1;
 }
 
 /* Hide the text. */
 .hide-text {
-	display: block;
-	overflow: hidden;
-	text-indent: 100%;
-	white-space: nowrap;
+  display: block;
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
 }
 
 img {
   max-height: 100%;
-	max-width: 100%;
+  max-width: 100%;
 }
 
 textarea, input, button, .mobile-nav-link {
-	outline: none;
-}
-.container {
-	margin: 0 auto;
-	padding: 0;
+  outline: none;
 }
 
-body.front{
-  &.no-scroll{
+.container {
+  margin: 0 auto;
+  padding: 0;
+}
+
+body.front {
+  &.no-scroll {
     overflow: hidden;
   }
 
-	.fullscreen{
-		.fullscreen-wrapper{
+  .fullscreen {
+    background: transparent;
+
+    .fullscreen-wrapper {
       @include breakpoint($xs) {
         overflow: hidden;
       }
 
-			.wrap.container{
-				max-width: 100%;
+      .wrap.container {
+        max-width: 100%;
         width: 100%;
 
-        >.content{
+        > .content {
           margin: 0;
 
-          .main{
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            margin: 0 auto;
-            max-width: $main-content-max-width;
-            width: 50%;
-
-            @include breakpoint($xs) {
-              width: 90%;
-            }
+          .main {
+            //margin: 0 auto;
+            //width: 50%;
           }
         }
-			}
-		}
-	}
+      }
+    }
+  }
 
-  #body-overlay{
-    background: rgba(255,255,255,.5);
+  #body-overlay {
+    background: rgba(255, 255, 255, .5);
     bottom: 0;
     left: 0;
     position: fixed;
@@ -97,4 +90,20 @@ body.front{
   //    z-index: 10000;
   //  }
   //}
+
+  &.page-template-template-projects {
+    .main {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      margin: 0 auto;
+      max-width: $main-content-max-width;
+      width: 50%;
+
+      @include breakpoint($xs) {
+        width: 90%;
+      }
+    }
+  }
 }

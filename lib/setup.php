@@ -241,3 +241,41 @@ if( function_exists('acf_add_options_page') ) {
     ));
 
 }
+
+//rss limit short description word count filter
+add_filter('the_excerpt_rss', __NAMESPACE__ . '\\filter_rss_excerpt', 10, 1);
+
+function filter_rss_excerpt($text) {
+ $ntext = $text;
+ if (str_word_count($text) > 50) {
+	$text = preg_split("/[\s]+/", $text, 50);
+	$ntext = '';
+	$count = count($text);
+	for ($i = 0; $i < $count - 1; $i++) {
+	 $ntext .= $text[$i] . ' ';
+	}
+	if ($count > 49) {
+	 $ntext .= '...';
+	}
+ }
+ $ntext = get_the_post_thumbnail($post->ID, 'medium', array('style' => 'margin:10px 15px 10px 0;border: 5px solid #fff;-moz-box-shadow: 3px 3px 3px #000;-webkit-box-shadow: 3px 3px 3px #000;box-shadow: 3px 3px 3px #000;')) . '<br/>' . $ntext;
+ return $ntext;
+}
+
+// add google analytics to head
+add_action('wp_head', __NAMESPACE__ . '\\google_analytics');
+function google_analytics() {
+ $script = <<<HTML
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-76325967-1', 'auto');
+		  ga('send', 'pageview');
+
+		</script>
+HTML;
+ echo $script;
+}

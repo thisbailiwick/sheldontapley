@@ -105,16 +105,7 @@ var nakasentro = {
 	//   this.windowRatioWidth = this.windowWidth / this.windowHeight;
 	// },
 	resetImageValues: function (artworkImage, artworkImageWrap) {
-		// artworkImage.style.width = "auto";
-		// artworkImage.style.height = "auto";
-		// artworkImage.style.minWidth = 0;
-		// artworkImage.style.minHeight = 0;
-
 		artworkImage.setAttribute("style", "");
-		// artworkImageWrap.style.width = "";
-		// artworkImageWrap.style.height = "";
-		// artworkImageWrap.style.minWidth = "";
-		// artworkImageWrap.style.minHeight = "";
 	},
 	setupValues: function () {
 		this.reset();

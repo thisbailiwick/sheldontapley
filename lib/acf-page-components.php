@@ -169,7 +169,7 @@ HTML;
             </div>
           </div>
           <div class="duration"></div>
-          <div class="timer"></div>
+          <div class="timer">0:00</div>
 				</div>
 HTML;
 

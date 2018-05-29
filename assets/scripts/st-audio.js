@@ -103,14 +103,17 @@ stAudio = {
       loop: false,
       volume: 1,
       preload: true,
+	    onload: function(){
+		    // Display the duration.
+		    duration.innerHTML = stAudio.formatTime(Math.round(player.duration()));
+	    },
       onplay: function() {
-        // Display the duration.
-        duration.innerHTML = stAudio.formatTime(Math.round(player.duration()));
         var data = { this: this, timer: timer, progress: progress };
         // Start upating the progress of the track.
         window.requestAnimationFrame(stAudio.step.bind(data));
       }
     });
+
 
     this.players.push(player);
 
