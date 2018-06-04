@@ -109,10 +109,6 @@
 					onEnterCompleted: function () {
 						// The Transition has just finished.
 
-
-						//spin up zoomy
-						zoomy.init();
-
 						// spin up share
 						share.init();
 
@@ -137,6 +133,9 @@
 						function checkIfImagesLoaded(imagesCount) {
 							if (imagesCount === 0) {
 								initArtwork();
+
+								//spin up zoomy, must be done after initArtwork
+								zoomy.init();
 							}
 						}
 

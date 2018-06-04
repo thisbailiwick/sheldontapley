@@ -4,7 +4,7 @@
 
  function get_sections($post, $sections) {
 	$sections_html = '';
-	foreach ($sections as $section) {
+	foreach ($sections as $index => $section) {
 	 $section_type = $section['acf_fc_layout'];
 	 if ($section_type == 'image_text_style_2' || $section_type === 'text_style_2') {
 		$section_type = str_replace('_style_2', '', $section_type);
@@ -12,7 +12,7 @@
 	 $function_html = 'Roots\\Sage\\ACF_Page_Components\\' . "html_" . $section_type;
 
 	 if (function_exists($function_html)) {
-		$id_tag = $section['acf_fc_layout'] . '-' . time();
+		$id_tag = $section['acf_fc_layout'] . '-' . $post->ID . '-' . $index;
 
 		$sections_html .= $function_html($section, $id_tag, $post);
 	 }
@@ -64,7 +64,7 @@ HTML;
  function html_body_text($content, $id_tag) {
 
 	$html = <<<HTML
-			<div class="{$content['acf_fc_layout']}-section{$content['acf_fc_layout']}"{$id_tag}>
+			<div class="{$content['acf_fc_layout']}-section {$content['acf_fc_layout']}" id="{$id_tag}">
 				<div class="text">{$content['body_text']}</div>
 			</div>
 
@@ -90,36 +90,39 @@ HTML;
 	$compare_image_height = get_field('compare_height_in_inches', 'options')['compare_height_in_inches'];
 	$compare_image_width = get_field('compare_width_in_inches', 'options')['compare_width_in_inches'];
 
-	$dev_share_buttons = get_dev_share_buttons(array('facebook', 'twitter', 'email', 'copy'), $permalink, $post->post_title, '', 	$image['url'], $post->ID);
+	$dev_share_buttons = get_dev_share_buttons(array('facebook', 'twitter', 'email', 'copy'), $permalink, $post->post_title, '', $image['url'], $post->ID);
 	return <<<HTML
-		<div class="{$content['acf_fc_layout']}">
+		<div id="{$unique_id}" class="{$content['acf_fc_layout']}">
 			<div class="image-wrap">
       	<div class="image-centered-background"></div>
         	<div class="image-space-placeholder">
-          	<img class="main-img" src="{$image['url']}" alt="{$image['alt']}" data-width="{$image['width']}" data-height="{$image['height']}"/>
+        		<div class="center-image-wrap">
+          		<img class="main-img" src="{$image['url']}" alt="{$image['alt']}" data-width="{$image['width']}" data-height="{$image['height']}"/>
+          	</div>
+          	<div class="zoomy-wrap">
+							<div class="mouse-map" style="background-image: url('{$image['url']}');"></div>
+            	{$dev_share_buttons}
+          	</div>
+            <div class="image-ratio-holder"></div>
 					</div>
-					<div class="zoomy-wrap">
-						<div id="{$unique_id}" class="mouse-map" style="background-image: url('{$image['url']}'); background-size: {$image['width']}px {$image['height']}px"></div>
-              {$dev_share_buttons}
-            </div>
-						<div class="piece-comparison">
-							<div class="piece-comparison-wrap">
-								<span class="close">X</span>
-								<div class="comparison-image-wrap">
-									<img class="comparison-image" src="{$image['url']}" alt="{$image['alt']}" data-width="{$content['width']}" data-height="{$content['height']}" />
-							 		<div class="info-text">{$artwork_info_text}<p>, <span class="width">{$content['width']}</span> x <span class="height">{$content['height']}</span></p></div>
-								</div>
-								<img src="/wordpress/wp-content/themes/sheldontapley-anew/dist/images/sheldon-cutout.png" class="compared-to" />
+					<div class="piece-comparison">
+						<div class="piece-comparison-wrap">
+							<span class="close">X</span>
+							<div class="comparison-image-wrap">
+								<img class="comparison-image" src="{$image['url']}" alt="{$image['alt']}" data-width="{$content['width']}" data-height="{$content['height']}" />
+								<div class="info-text">{$artwork_info_text}<p>, <span class="width">{$content['width']}</span> x <span class="height">{$content['height']}</span></p></div>
 							</div>
+							<img src="/wordpress/wp-content/themes/sheldontapley-anew/dist/images/sheldon-cutout.png" class="compared-to" />
 						</div>
-            <div class="artwork-meta">
-              <div class="caption">{$content['caption_text']}</div>
-              <div class="actions">
-                <div class="zoom fas fa-search-plus" data-large-image="{$image['url']}" data-zoom-unique-id="{$unique_id}"></div>
-                <div class="info fas fa-info-circle" data-width="{$content['width']}" data-height="{$content['height']}" data-compare-height-inches="{$compare_image_height}" data-compare-width-inches="{$compare_image_width}"></div>
-                <div class="share fas fa-share-square"></div>
-              </div>
-            </div>
+					</div>
+					<div class="artwork-meta">
+						<div class="caption">{$content['caption_text']}</div>
+						<div class="actions">
+							<div class="zoom fas fa-search-plus" data-large-image="{$image['url']}" data-zoom-unique-id="{$unique_id}"></div>
+							<div class="info fas fa-info-circle" data-width="{$content['width']}" data-height="{$content['height']}" data-compare-height-inches="{$compare_image_height}" data-compare-width-inches="{$compare_image_width}"></div>
+							<div class="share fas fa-share-square"></div>
+						</div>
+					</div>
           </div>
 			</div>
 HTML;

@@ -53,7 +53,9 @@ body.front {
   }
 
   .fullscreen {
-    background: transparent;
+    //background: transparent;
+    background-color: #faf9f9;
+    transition-duration: .75s;
 
     .fullscreen-wrapper {
       @include breakpoint($xs) {

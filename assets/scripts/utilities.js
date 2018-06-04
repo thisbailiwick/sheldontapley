@@ -123,6 +123,14 @@ var utilities = {
 
 	hideOverlay: function () {
 		document.body.classList.remove('show-body-overlay');
+	},
+
+	addCssToPage: function(styles, id) {
+		var style = document.createElement('style');
+		style.type = 'text/css';
+		style.innerHTML = styles;
+		style.setAttribute('id', id);
+		document.getElementsByTagName('head')[0].appendChild(style);
 	}
 };
 

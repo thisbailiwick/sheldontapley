@@ -137,9 +137,10 @@ var jsTasks = function (filename) {
 		})
 		.pipe(concat, filename)
 		.pipe(uglify, {
-			compress: {
-				'drop_debugger': enabled.stripJSDebug
-      },
+      // compress: {
+				// 'drop_debugger': enabled.stripJSDebug
+      // },
+			compress: false,
       mangle: false
 		})
 		.pipe(function () {
