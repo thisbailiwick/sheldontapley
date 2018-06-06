@@ -37,7 +37,7 @@
         flex-shrink: 0;
         //left: 0;
         max-height: 100vh;
-        position: absolute;
+        position: static;
         //top: 0;
         transition-duration: 1s;
         //transition-duration: $zoom-transition-duration;
@@ -274,8 +274,8 @@
       .caption {
         width: auto;
       }
-      
-      .actions{
+
+      .actions {
         position: static;
       }
     }
@@ -364,6 +364,7 @@ body {
   //  }
   //}
   &.is-touch {
+    @include nonAnimatingMobile;
     &.zoomed {
       overflow: hidden;
     }
@@ -397,5 +398,9 @@ body {
     }
   }
   &.orientation-portrait {
+  }
+
+  @media screen and (max-width: $main-content-max-width + 30px) {
+    @include nonAnimatingMobile;
   }
 }

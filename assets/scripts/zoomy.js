@@ -74,23 +74,26 @@ zoomy = {
 	mapMouseToImage: function (e) {
 		var mouseMap = this.mouseMapImage;
 		var position = mousePosition.mousePositionElement(e);
-		// console.log('position.x, position.y: ' + position.x, position.y);
+		console.log('position.x, position.y: ' + position.x, position.y);
 		if (position.x > 0) {
 			var leftPercentage = 0;
 			var topPercentage = 0;
 
 			if(nakasentro.artworks[this.artworksIndex].imageCentered === true) {
 				// image centered
-
+				console.log('image centered');
 				// adjust the percentage based on the scale amount (the transfoorm: scale() messes with the sizes somehow
 				if (this.imageRotation === 'width') {
+					console.log('width');
 					leftPercentage = (position.x / (mouseMap.clientWidth * this.scaleWidth)) * 100;
 					topPercentage = (position.y / ((mouseMap.clientWidth * this.scaleWidth) * nakasentro.artworks[this.artworksIndex].originalDimensions.imageRatioHeight)) * 100;
 				} else {
+					console.log('height');
 					topPercentage = (position.y / (mouseMap.clientHeight * this.scaleHeight)) * 100;
 					leftPercentage = (position.x / (((mouseMap.clientHeight * this.scaleHeight) * nakasentro.artworks[this.artworksIndex].originalDimensions.imageRatioWidth) * this.scaleWidth)) * 100;
 				}
 			}else{
+				console.log('image not centered');
 				// image not centered
 				var leftPercentage = position.x / mouseMap.clientWidth * 101;
 				var topPercentage = position.y / mouseMap.clientHeight * 101;

@@ -105,12 +105,20 @@ var moreInfo = {
 		// // which image is wider
 
 		do {
+
+			// todo: this may only work with wider than tall images, may need to add alternate
+			// get a slightly smaller width value
 			dimensionValues.pieceWidthPixels = this.getNewValue(dimensionValues.pieceWidthPixels);
 			// dimensionValues.pieceHeightPixels = this.getNewValue(dimensionValues.pieceHeightPixels);
+
+			// get the new height value the piece based on the newly found width
 			dimensionValues.pieceHeightPixels = this.getImageHeightPixels(dimensionValues.pieceWidthPixels, dimensionValues.pieceHeightImageRatio);
 
+			// get a slightly smaller width for the forscale image
 			dimensionValues.forScaleWidthPixels = this.getNewValue(dimensionValues.forScaleWidthPixels);
 			// dimensionValues.forScaleHeightPixels = this.getNewValue(dimensionValues.forScaleHeightPixels);
+
+			// get forsacle height value based on newly found forscale width value
 			dimensionValues.forScaleHeightPixels = this.getImageHeightPixels(dimensionValues.forScaleWidthPixels, dimensionValues.forScaleHeightImageRatio);
 
 			// this.logDimensionInfo(dimensionValues, originalHeightRatio, originalWidthRatio);
@@ -128,7 +136,12 @@ var moreInfo = {
 		};
 	},
 	getImageHeightPixels: function (imageWidthPixels, imageHeightRatio) {
-		return imageWidthPixels * imageHeightRatio;
+
+		// if(imageHeightRatio < 1) {
+			return imageWidthPixels * imageHeightRatio;
+		// }else{
+		// 	return imageHeightRatio / imageWidthPixels;
+		// }
 	},
 	getImageWidthPixels: function (imageHeightPixels, imageWidthRatio) {
 		return Math.floor(imageHeightPixels * imageWidthRatio);
@@ -150,6 +163,7 @@ var moreInfo = {
 	// calculateNewDimensions: function (pieceWidthInches, pieceImageNaturalWidth, pieceImageNaturalHeight, forScaleWidthInches, pieceHeightInches, forScaleHeightInches, pieceComparisonWrapWidthPixels, pieceComparisonWrapHeightPixels, pieceHeightImageRatio, pieceWidthImageRatio, forScaleHeightImageRatio, pieceImage, forScale, pieceComparisonWrap) {
 	calculateNewDimensions: function (pieceDimensions, forScaleDimensions, pieceComparisonWrapWidthPixels, pieceComparisonWrapHeightPixels, pieceComparisonWrap) {
 		// console.log(pieceComparisonWrapWidthPixels);
+
 		// if the image rotation is portrait we find who is the widest, if landscape then we find who is tallest
 		// we then set the baseline height or width to the spacing we have from pieceComparisonWrapHeightPixels or pieceComparisonWrapWidthPixels
 		var widthBaseline = null;
@@ -157,7 +171,7 @@ var moreInfo = {
 
 		var pieceImageRotation = utilities.getImageSizeChangeTechnique(pieceDimensions.image, pieceComparisonWrap);
 		var forScaleImageRotation = utilities.getImageSizeChangeTechnique(forScaleDimensions.image, pieceComparisonWrap);
-		// console.log(pieceImageRotation);
+		console.log(pieceImageRotation);
 		// console.log(forScaleImageRotation);
 
 		var pieceWidthPixels = null;
@@ -170,6 +184,8 @@ var moreInfo = {
 			// piece values
 			pieceWidthPixels = widthBaseline;
 			pieceHeightPixels = this.getImageHeightPixels(pieceWidthPixels, pieceDimensions.heightRatioInches);
+
+
 
 			// console.log('pieceScaleWidthRatio / pieceWidthPixels: ' + forScaleDimensions.widthRatioInches, pieceWidthPixels);
 			// forscale values based off of the piece amounts relative to the piece/forscale ratio
@@ -186,13 +202,15 @@ var moreInfo = {
 		// this is the ratio of piece width to forscale width
 		var pieceToScaleWidthRatio = pieceDimensions.widthInches / forScaleDimensions.widthInches;
 		var pieceToScaleHeightRatio = pieceDimensions.heightInches / forScaleDimensions.heightInches;
+		console.log(pieceToScaleWidthRatio, pieceToScaleHeightRatio);
+		console.log('pieceDimensions.widthInches: ' + pieceDimensions.widthInches, forScaleDimensions.widthInches);
+		console.log('pieceDimensions.heightInches: ' + pieceDimensions.heightInches, forScaleDimensions.heightInches);
 
-		// forscale values based off of the piece amounts relative to the piece/forscale ratio
-		// var forScaleWidthPixels = Math.floor(pieceWidthPixels * pieceToScaleWidthRatio);
-		// var forScaleHeightPixels = Math.floor(pieceHeightPixels * pieceToScaleHeightRatio);
-		var forScaleWidthPixels = Math.floor(pieceWidthPixels * forScaleDimensions.widthRatioInches);
-		var forScaleHeightPixels = Math.floor(pieceHeightPixels * forScaleDimensions.heightRatioInches);
 
+		// get forscale pixel dimensions based of piecetoscale ratios
+		var forScaleWidthPixels = Math.floor(pieceWidthPixels / pieceToScaleWidthRatio);
+		var forScaleHeightPixels = Math.floor(pieceHeightPixels / pieceToScaleHeightRatio);
+		
 		var dimensionValues = {
 			pieceWidthPixels: Math.floor(pieceWidthPixels),
 			pieceHeightPixels: pieceHeightPixels,
@@ -206,7 +224,7 @@ var moreInfo = {
 			pieceToScaleHeightRatio: pieceToScaleHeightRatio
 		};
 		// console.log("newWidthPercentage: " + newWidthPercentage);
-		// console.log('dimensionValues before object.assign: ', JSON.stringify(dimensionValues));
+		console.log('dimensionValues before object.assign: ', JSON.stringify(dimensionValues));
 
 
 		dimensionValues = Object.assign(this.recalculateNewDimensions(dimensionValues), dimensionValues);
