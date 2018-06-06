@@ -621,7 +621,7 @@ var nakasentro = {
 		            : false;
 		nakasentro.artworks.forEach(function (artwork, index) {
 			var percent = artwork.visibility.percentage();
-			if (percent > 0 || initCheck === true) {
+			if (percent > 0) {
 				nakasentro.possiblyCenterUncenterImage(artwork);
 			} else {
 				// this.resetImageValues(artwork.artworkImage, artwork.artworkImageWrap);

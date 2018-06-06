@@ -210,7 +210,7 @@ var moreInfo = {
 		// get forscale pixel dimensions based of piecetoscale ratios
 		var forScaleWidthPixels = Math.floor(pieceWidthPixels / pieceToScaleWidthRatio);
 		var forScaleHeightPixels = Math.floor(pieceHeightPixels / pieceToScaleHeightRatio);
-		
+
 		var dimensionValues = {
 			pieceWidthPixels: Math.floor(pieceWidthPixels),
 			pieceHeightPixels: pieceHeightPixels,
